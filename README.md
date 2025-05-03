@@ -53,6 +53,20 @@ Follow the on-screen menu instructions.
 
 ---
 
+## How to Check if Vulkan is Active
+
+To verify that Vulkan rendering is enabled:
+
+1. **Open Developer Options** on your device.
+2. **Enable GPUWatch.**
+3. **Open any app** (for example, the Dialer).
+4. GPUWatch will display an overlay-look for the renderer information.
+   - If Vulkan is active, it will show something like: **Vulkan Renderer (skiavk)**
+
+This is the easiest way to confirm that Vulkan is running on your Galaxy S23 device.
+
+
+---
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
