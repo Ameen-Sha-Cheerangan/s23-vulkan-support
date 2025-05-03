@@ -29,7 +29,7 @@ This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB 
 
 `cd s23-ultra-vulkan-linux-script`
 
-`chmod +x vulkan_switch.sh`
+`chmod +x opengl-to-vulkan.sh`
 
 
 ---
