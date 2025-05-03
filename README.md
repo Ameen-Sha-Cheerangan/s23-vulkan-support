@@ -1,6 +1,6 @@
 # S23 Ultra Vulkan Linux Script
 
-This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB from Linux. It improves performance, reduces device heat, and extends battery life by switching system rendering from OpenGL to Vulkan.
+This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB from Linux. It is believed or reported by users to improve performance, reduce device heat, and extend battery life by switching system rendering from OpenGL to Vulkan, though long-term effects have not been extensively tested by the author
 
 ---
 
