@@ -31,13 +31,15 @@ This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB 
 
 `chmod +x opengl-to-vulkan.sh`
 
-
----
-
-## Usage
-
 `./opengl-to-vulkan.sh`
 Follow the on-screen menu instructions.
+
+
+## Uninstall / Switch Back to OpenGL
+
+To revert your device back to OpenGL rendering, **simply restart your phone**.  
+No files or settings need to be removed-rebooting the device will reset the GPU renderer to its default (OpenGL).
+
 
 ---
 
