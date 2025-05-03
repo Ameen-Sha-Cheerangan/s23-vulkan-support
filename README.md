@@ -35,6 +35,8 @@ This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB 
 ---
 
 ## Usage
+
+`./opengl-to-vulkan.sh`
 Follow the on-screen menu instructions.
 
 ---
