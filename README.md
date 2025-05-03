@@ -40,7 +40,7 @@ Follow the on-screen menu instructions.
 ## Warnings
 
 - **Launching all apps is NOT recommended!**  
-  This may wake up background/sleeping apps, increase battery drain, and disrupt notification delivery.  
+  This may wake up background/sleeping apps, increase battery drain.  
 - If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
 - Changes are **not permanent** and will reset after a device reboot.
 
