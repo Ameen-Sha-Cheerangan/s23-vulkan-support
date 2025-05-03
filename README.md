@@ -54,8 +54,7 @@ No files or settings need to be removed-rebooting the device will reset the GPU 
 
 ## Credits
 
-- Original Windows script and concept: [[popovicialinc](https://github.com/popovicialinc)
-](https://github.com/popovicialinc/gama)
+- Original Windows script and concept: https://github.com/popovicialinc/gama
 ---
 
 ## How to Check if Vulkan is Active
