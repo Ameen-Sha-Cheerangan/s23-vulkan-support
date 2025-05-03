@@ -53,7 +53,6 @@ Follow the on-screen menu instructions.
 ## Credits
 
 - Original Windows script and concept: [popovicialinc](https://github.com/popovicialinc)
-- Linux adaptation & enhancements: [Ameen-Sha-Cheerangan]
 
 ---
 
