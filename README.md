@@ -69,6 +69,10 @@ To verify that Vulkan rendering is enabled:
 
 This is the easiest way to confirm that Vulkan is running on your Galaxy S23 device.
 
+---
+## Issues
+
+If you find some, please raise it as an issue.
 
 ---
 ## License
