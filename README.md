@@ -50,6 +50,14 @@ No files or settings need to be removed-rebooting the device will reset the GPU 
 - If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
 - Changes are **not permanent** and will reset after a device reboot.
 
+
+## Standard Disclaimer (Just in Case!)
+
+This script is provided “as is,” with no guarantees or warranties-use at your own risk. While this disclaimer is here for completeness and legal safety, I personally don’t think anything bad will happen to your device when using this script as described.
+The script only changes a system rendering setting temporarily (it reverts on reboot), and does not modify or delete any files on your device. Still, please make sure to back up important data and follow the instructions carefully.
+The author is not responsible for any unexpected issues, data loss, or device instability that may arise from use of this tool. This is not an official Samsung or Google product.
+
+In summary: This is a standard disclaimer-problems are very unlikely, but always proceed with care!
 ---
 
 ## Credits
