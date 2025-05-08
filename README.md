@@ -17,7 +17,9 @@ This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB 
 ## Requirements
 
 - Linux PC
-- [ADB](https://developer.android.com/tools/adb) installed (`sudo apt install android-sdk-platform-tools`)
+- [ADB](https://developer.android.com/tools/adb) installed
+      Ubuntu - (`sudo apt-get update && sudo apt-get install android-sdk-platform-tools gawk grep coreutils`)
+      Fedora/RHEL/CentOS - (`sudo dnf install android-tools gawk grep coreutils`)
 - Samsung Galaxy S23/S23+/S23U
 - USB Debugging enabled on your phone (`Settings > Developer Options > USB Debugging`)
 - A suitable USB cable for connection
