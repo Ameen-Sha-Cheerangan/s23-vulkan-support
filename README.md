@@ -24,7 +24,7 @@ This script forces Vulkan rendering on any Samsung Galaxy S23 variant using ADB 
 
 ---
 
-## How to switch to Vulkan
+## Installation / How to switch to Vulkan
 Download and Setting up(Just do this for once)
 `git clone https://github.com/Ameen-Sha-Cheerangan/s23-ultra-vulkan-linux-script.git`
 `cd s23-ultra-vulkan-linux-script`
