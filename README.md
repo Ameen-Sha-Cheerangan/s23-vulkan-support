@@ -58,6 +58,7 @@ The script only changes a system rendering setting temporarily (it reverts on re
 The author is not responsible for any unexpected issues, data loss, or device instability that may arise from use of this tool. This is not an official Samsung or Google product.
 
 In summary: This is a standard disclaimer-problems are very unlikely, but always proceed with care!
+
 ---
 
 ## Credits
