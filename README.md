@@ -65,7 +65,6 @@ No files or settings need to be removed-rebooting the device will reset the GPU 
 
 This tool is community-driven and experimental. Below are known issues reported by users or observed during testing. This list may expand as more feedback is received.
 
---
 
 ### 🔸 Vulkan Rendering Issues
 
@@ -74,8 +73,6 @@ This tool is community-driven and experimental. Below are known issues reported 
 
 - **App Compatibility**  
   Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There is no workaround—Samsung must adopt Vulkan across models, and developers must support it fully.
-
---
 
 ### 🔸 System-Wide App Restart Issues
 
@@ -90,8 +87,6 @@ This tool is community-driven and experimental. Below are known issues reported 
 - **Aggressiveness Profile Note**  
   Using the "Aggressive" profile when stopping apps increases the chance of the above issues.  
   For fewer side effects, use the "Normal" profile when prompted by the script.
-
---
 
 ### 🔸 Additional Notes
 
