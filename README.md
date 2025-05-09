@@ -59,7 +59,48 @@ No files or settings need to be removed-rebooting the device will reset the GPU 
 - If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
 - The blacklist feature is based on a Reddit user's recommendation and may not work for everyone.
 
+---
 
+## ⚠️ Known Issues
+
+This tool is community-driven and experimental. Below are known issues reported by users or observed during testing. This list may expand as more feedback is received.
+
+---
+
+### 🔸 Vulkan Rendering Issues
+
+- **Visual Artifacts**  
+  Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
+
+- **App Compatibility**  
+  Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There is no workaround—Samsung must adopt Vulkan across models, and developers must support it fully.
+
+---
+
+### 🔸 System-Wide App Restart Issues
+
+- **Default App Resets**  
+  After a system-wide app stop, default apps such as your browser or keyboard may be reset to Samsung defaults.
+
+- **Loss of WiFi Calling / VoLTE**  
+  Some users reported losing WiFi-Calling or VoLTE after restarting all apps.  
+  **Fix**: Go to **Settings > Connections > SIM manager**, then toggle SIM 1/2 **off and back on**.  
+  *Credit: Reddit users [Fun-Flight4427](https://www.reddit.com/user/Fun-Flight4427) and [ActualMountain7899](https://www.reddit.com/user/ActualMountain7899)*
+
+- **Aggressiveness Profile Note**  
+  Using the "Aggressive" profile when stopping apps increases the chance of the above issues.  
+  For fewer side effects, use the "Normal" profile when prompted by the script.
+
+---
+
+### 🔸 Additional Notes
+
+- These issues are **not bugs in the script** itself but rather limitations of system behavior when Vulkan is forced and apps are restarted.
+- **Launching all apps is not recommended** as it may drain battery, warm up the device, and increase side effects.
+- All changes made by the script are **temporary** and will **reset on device reboot**.
+
+---
+---
 ## Standard Disclaimer (Just in Case!)
 
 This script is provided for your convenience.  
