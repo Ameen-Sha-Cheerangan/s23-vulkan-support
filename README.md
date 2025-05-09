@@ -18,7 +18,19 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Clear instructions and user prompts
 
 ---
+## Vulkan Modes
+When you select "Switch to Vulkan", you will be prompted to choose how aggressive the script should be when stopping apps:
 
+- Normal Mode (Recommended):
+      Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard).
+      This mode avoids the issues listed below and is suitable for nearly all users.
+
+- Aggressive Mode (Read the issues(section : System-Wide App Restart Issues), I didn't face it because I don't use them, so I use Aggressive mode):
+      Force-stops all apps and relaunches previously running apps and widgets.
+      This mode may cause the side effects described in Known Issues.      
+      Recommended only if you need Vulkan applied to every app immediately.
+
+---
 ## Requirements
 
 - Linux PC
@@ -46,19 +58,7 @@ Clone the repository (do this once):
 Follow the on-screen menu instructions.
 
 ---
-## Vulkan Modes
-When you select "Switch to Vulkan", you will be prompted to choose how aggressive the script should be when stopping apps:
 
-- Normal Mode (Recommended):
-      Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard).
-      This mode avoids the issues listed below and is suitable for nearly all users.
-
-- Aggressive Mode (Read the issues, I didn't face it because I don't use them, so I use Aggressive mode):
-      Force-stops all apps and relaunches previously running apps and widgets.
-      This mode may cause the side effects described in Known Issues.      
-      Recommended only if you need Vulkan applied to every app immediately.
-
----
 
 
 ## ⚠️ Known Issues
