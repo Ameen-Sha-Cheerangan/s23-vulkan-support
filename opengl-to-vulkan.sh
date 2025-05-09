@@ -72,9 +72,9 @@ while true; do
     # set -x  # Enable trace mode
     clear
 
-    echo "GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script"
+    echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
     echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool (Linux) ==== ${RESET}"
-    echo "1) Force Vulkan, Stop All Apps, and Relaunch Previously Running Apps and Widgets(Recommended)"
+    echo "1) Switch to Vulkan(Recommended)"
     echo "2) Switch to OpenGL (Reboot Device)"
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
@@ -88,46 +88,73 @@ while true; do
     case $choice in
         1)
             check_device || continue
-            > "all_packages.txt"
-            > "app_to_restart.txt"
-            > force_stop_errors.log
-            > "running_apps.log"
-            adb shell '
-                for pkg in $(pm list packages | grep -v ia.mo | cut -f2 -d:); do
-                    echo "$pkg"
-                done
-            ' 2>/dev/null | sort > all_packages.txt
-
-            adb shell dumpsys activity processes > running_apps.log
-
-            while read pkg; do
-                if grep -q "$pkg" running_apps.log; then
-                    echo "$pkg" >> "app_to_restart.txt"
-                fi
-            done < all_packages.txt
-
-            adb shell "
-                setprop debug.hwui.renderer skiavk;
-                for a in \$(pm list packages | grep -v ia.mo | cut -f2 -d:); do
-                    am force-stop \"\$a\" &
-                done
-                wait
-            " > /dev/null 2> force_stop_errors.log
+            echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
+            echo "1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
+            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended]"
             echo ""
+            echo "   I recommend option 2 for most users, as I have not seen any issues on my device."
+            echo ""
+            echo "   Note: Some users have reported that using the Aggressive option can cause:"
+            echo "     - The default browser and default keyboard to be reset."
+            echo "     - Loss of WiFi-Calling/VoLTE capability."
+            echo "       Fix: Go to Settings > Connections > SIM manager, then toggle SIM 1/2 off and back on."
+            echo ""
+            echo "   (Many thanks to Fun-Flight4427 and ActualMountain7899 for reporting the bug and finding a solution.)"
+            echo "   This information and workaround are based on reports and documentation from the GAMA project:"
+            echo -e "${BLUE}   https://github.com/popovicialinc/gama${RESET}"
+            read -p "Choose [1-2]: " aggressive_choice
 
-            echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
-            adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+            if [[ $aggressive_choice == "1" ]]; then
+                adb shell setprop debug.hwui.renderer skiavk
+                adb shell am crash com.android.systemui
+                adb shell am force-stop com.android.settings
+                adb shell am force-stop com.sec.android.app.launcher
+                adb shell am force-stop com.samsung.android.app.aodservice
+                adb shell am crash com.google.android.inputmethod.latin b
+                echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
+            else
+                > "all_packages.txt"
+                > "app_to_restart.txt"
+                > force_stop_errors.log
+                > "running_apps.log"
+                adb shell '
+                    for pkg in $(pm list packages | grep -v ia.mo | cut -f2 -d:); do
+                        echo "$pkg"
+                    done
+                ' 2>/dev/null | sort > all_packages.txt
 
-            sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
+                adb shell dumpsys activity processes > running_apps.log
 
-            adb shell am force-stop com.sec.android.app.launcher
-            sleep 2
-            adb shell monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1
+                while read pkg; do
+                    if grep -q "$pkg" running_apps.log; then
+                        echo "$pkg" >> "app_to_restart.txt"
+                    fi
+                done < all_packages.txt
 
-            adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
+                adb shell "
+                    setprop debug.hwui.renderer skiavk;
+                    for a in \$(pm list packages | grep -v ia.mo | cut -f2 -d:); do
+                        am force-stop \"\$a\" &
+                    done
+                    wait
+                " > /dev/null 2> force_stop_errors.log
+                echo ""
 
-            echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
+                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
 
+                sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
+
+                adb shell am force-stop com.sec.android.app.launcher
+                sleep 2
+                adb shell monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1
+
+                adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
+
+                echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
+
+            fi
+            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -161,10 +188,10 @@ while true; do
             show_info
             ;;
         5)
-            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo -e "${GREEN}Thank you for using the S23/S23+/S23U Vulkan Rendering Tool!${RESET}"
             echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
-            echo "GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script"
+            echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
+            echo -e "For updates, visit the GitHub repo above."
             exit 0
             ;;
         6)
