@@ -133,6 +133,10 @@ This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23
 ---
 ## FAQ
 
+### What is Vulkan, why should I switch to it?
+
+Vulkan is a modern graphics API that offers more efficient, low-overhead access to your device’s GPU compared to OpenGL. Switching to Vulkan can improve performance, reduce device heat, and extend battery life as reported by reddit users in S23 Ultra reddit community.
+
 ### Why is there a "Launch All Apps" option?
 
 This option is included because it is a common practice in other Vulkan-enabling scripts for Samsung devices. In practice, you rarely need to launch all apps after forcing Vulkan. Most users will not benefit from this step, and it may cause unnecessary battery drain or device warmth. It is included for completeness and for advanced troubleshooting only.
