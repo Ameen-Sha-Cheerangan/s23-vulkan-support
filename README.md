@@ -102,7 +102,7 @@ This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23
 
 This option is included because it is a common practice in other Vulkan-enabling scripts for Samsung devices. In practice, you rarely need to launch all apps after forcing Vulkan. Most users will not benefit from this step, and it may cause unnecessary battery drain or device warmth. It is included for completeness and for advanced troubleshooting only.
 
-### I see "Shell does not have permission to crash packages for user 150" in the output. Is this a problem?
+### I see error related to "user 150" in the output. Is this a problem?
 
 No, this is expected and harmless. This message appears because some apps-such as those inside Samsung Secure Folder or other secondary user profiles-cannot be controlled by ADB shell commands unless the device is rooted. The shell user (used by ADB) only has permission to control apps for the main device user (user 0), not for additional users like user 150 (which is typically Secure Folder). Your main device user (user 0) is still fully handled by the script, and this message can be safely ignored
 
