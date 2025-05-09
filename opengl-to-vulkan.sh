@@ -39,6 +39,17 @@ check_device() {
     return 0
 }
 
+show_warning() {
+    clear
+    echo "⚠️  WARNING: Launching all apps may:"
+    echo "- Wake sleeping/background apps"
+    echo "- Disrupt notification delivery"
+    echo "- Increase battery consumption temporarily"
+    echo ""
+    echo "ℹ️  In rare cases if something might not load this might fix it. But I think you can directly launch it, that would be better"
+    echo ""
+}
+
 show_info() {
     clear
     echo -e "${BOLD}${BLUE}==== Info & Help ==== ${RESET}"
@@ -66,10 +77,11 @@ while true; do
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
     echo "5) Exit"
+    echo "6) Launch All Apps (See Warnings, Not Recommended)"
 
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
-    read -p "Choose [1-5]: " choice
+    read -p "Choose [1-6]: " choice
 
     case $choice in
         1)
@@ -152,6 +164,18 @@ while true; do
             echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
             echo "GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script"
             exit 0
+            ;;
+        6)
+            show_warning
+            read -p "Type 'YES' to continue: " confirm
+            if [[ $confirm == "YES" ]]; then
+                check_device || continue
+                adb shell "for pkg in \$(pm list packages | cut -f2 -d:); do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done"
+                echo "⚠️  All apps launched! Close unused apps from Recents immediately."
+            else
+                echo "❌ Launch canceled."
+            fi
+            read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
         *)
             echo -e "${RED}Invalid choice${RESET}"
