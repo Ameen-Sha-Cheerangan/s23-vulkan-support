@@ -71,13 +71,15 @@ show_info() {
 while true; do
     # set -x  # Enable trace mode
     clear
-    echo -e "${BOLD}${BLUE}==== S23 Vulkan Rendering Tool (Linux) ==== ${RESET}"
+
+    echo "GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script"
+    echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool (Linux) ==== ${RESET}"
     echo "1) Force Vulkan, Stop All Apps, and Relaunch Previously Running Apps and Widgets(Recommended)"
     echo "2) Switch to OpenGL (Reboot Device)"
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
     echo "5) Exit"
-    echo "6) Launch All Apps (See Warnings, Not Recommended)"
+    echo "6) Launch All Apps (See Warnings, Not at all recommended)"
 
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
@@ -160,7 +162,7 @@ while true; do
             ;;
         5)
             rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
-            echo -e "${GREEN}Thank you for using the S23 Vulkan Rendering Tool!${RESET}"
+            echo -e "${GREEN}Thank you for using the S23/S23+/S23U Vulkan Rendering Tool!${RESET}"
             echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
             echo "GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script"
             exit 0
