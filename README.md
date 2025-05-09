@@ -11,6 +11,7 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Easy menu-driven interface with safety warnings and notices
 - Forces Vulkan rendering via ADB
 - Stops all apps and relaunches previously running apps and widgets
+- Optionally: Launch all apps (not at all recommended; see warnings)
 - Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
 - Clear instructions and user prompts
 
@@ -30,9 +31,9 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 
 ## Installation / How to switch to Vulkan
 Clone the repository (do this once):
-`git clone https://github.com/Ameen-Sha-Cheerangan/s23-ultra-vulkan-linux-script.git`
+`git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script.git`
 
-`cd s23-ultra-vulkan-linux-script`
+`cd s23-vulkan-linux-script`
 
 `chmod +x opengl-to-vulkan.sh`
 
@@ -55,7 +56,6 @@ No files or settings need to be removed-rebooting the device will reset the GPU 
 
 - **All changes are temporary!** Vulkan rendering will reset after a device reboot.
 - **Launching all apps is NOT recommended!**  
-  This may wake up background/sleeping apps and increase battery drain.
 - If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
 - The blacklist feature is based on a Reddit user's recommendation and may not work for everyone.
 
@@ -93,7 +93,14 @@ To verify that Vulkan rendering is enabled:
 4. GPUWatch will display an overlay-look for the renderer information.
    - If Vulkan is active, it will show something like: **Vulkan Renderer (skiavk)**
 
-This is the easiest way to confirm that Vulkan is running on your Galaxy S23 device.
+This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23+/S23U device.
+
+---
+## FAQ
+
+### Why is there a "Launch All Apps" option?
+
+This option is included because it is a common practice in other Vulkan-enabling scripts for Samsung devices. In practice, you rarely need to launch all apps after forcing Vulkan. Most users will not benefit from this step, and it may cause unnecessary battery drain or device warmth. It is included for completeness and for advanced troubleshooting only.
 
 ---
 ## Issues
