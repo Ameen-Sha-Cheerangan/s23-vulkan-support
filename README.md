@@ -10,7 +10,9 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 
 - Easy menu-driven interface with safety warnings and notices
 - Forces Vulkan rendering via ADB
-- Stops all apps and relaunches previously running apps and widgets
+- Offers two modes for applying Vulkan:
+      Normal mode: Only restarts key system apps (recommended for most users; avoids most issues)
+      Aggressive mode: Stops all apps and relaunches previously running apps and widgets (may cause side effects; see Known Issues)
 - Optionally: Launch all apps (not at all recommended; see warnings)
 - Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
 - Clear instructions and user prompts
@@ -43,23 +45,21 @@ Clone the repository (do this once):
 
 Follow the on-screen menu instructions.
 
+---
+## Vulkan Modes
+When you select "Switch to Vulkan", you will be prompted to choose how aggressive the script should be when stopping apps:
 
-## Uninstall / Switch Back to OpenGL
+- Normal Mode (Recommended):
+      Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard).
+      This mode avoids the issues listed below and is suitable for nearly all users.
 
-To revert your device back to OpenGL rendering, **simply restart your phone**.  
-No files or settings need to be removed-rebooting the device will reset the GPU renderer to its default (OpenGL).
-
+- Aggressive Mode (Read the issues, I didn't face it because I don't use them, so I use Aggressive mode):
+      Force-stops all apps and relaunches previously running apps and widgets.
+      This mode may cause the side effects described in Known Issues.      
+      Recommended only if you need Vulkan applied to every app immediately.
 
 ---
 
-## Warnings
-
-- **All changes are temporary!** Vulkan rendering will reset after a device reboot.
-- **Launching all apps is NOT recommended!**  
-- If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
-- The blacklist feature is based on a Reddit user's recommendation and may not work for everyone.
-
----
 
 ## ⚠️ Known Issues
 
@@ -92,6 +92,22 @@ This tool is community-driven and experimental. Below are known issues reported 
 
 - These issues are **not bugs in the script** itself but rather limitations of system behavior when Vulkan is forced and apps are restarted.
 - All changes made by the script are **temporary** and will **reset on device reboot**.
+---
+
+## Uninstall / Switch Back to OpenGL
+
+To revert your device back to OpenGL rendering, **simply restart your phone**.  
+No files or settings need to be removed-rebooting the device will reset the GPU renderer to its default (OpenGL).
+
+
+---
+
+## Warnings
+
+- **All changes are temporary!** Vulkan rendering will reset after a device reboot.
+- **Launching all apps is NOT recommended!**  
+- If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
+- The blacklist feature is based on a Reddit user's recommendation and may not work for everyone.
 
 
 ---
