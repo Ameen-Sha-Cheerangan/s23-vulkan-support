@@ -131,7 +131,7 @@ while true; do
 
                 adb shell "
                     setprop debug.hwui.renderer skiavk;
-                    for a in \$(pm list packages | grep -v ia.mo | cut -f2 -d:); do
+                    for a in \$(cat all_packages.txt); do
                         am force-stop \"\$a\" &
                     done
                     wait
@@ -152,7 +152,7 @@ while true; do
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
 
             fi
-            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            # rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
