@@ -184,7 +184,9 @@ while true; do
             show_warning
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
-                for pkg in \$(pm list packages | cut -f2 -d:); do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done
+                for pkg in $(pm list packages | cut -f2 -d:); do
+                    monkey -p "$pkg" -c android.intent.category.LAUNCHER 1
+                done
                 echo "⚠️  All apps launched! Close unused apps from Recents immediately."
             else
                 echo "❌ Launch canceled."
