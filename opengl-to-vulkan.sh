@@ -179,6 +179,14 @@ while true; do
                 echo "  (It may help prevent crashes for some apps, but results may vary.)"
                 echo "  To remove apps from the blacklist, edit blacklist.txt and run this step again."
                 echo -e "${RESET}"
+                echo -e "${BLUE}Current Game Driver Blacklist:${RESET}"
+                current_blacklist=$(adb shell settings get global game_driver_blacklist)
+                if [[ -z "$current_blacklist" || "$current_blacklist" == "null" ]]; then
+                    echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
+                else
+                    # Print each package on a new line for readability
+                    echo "$current_blacklist" | tr ',' '\n'
+                fi
             fi
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
