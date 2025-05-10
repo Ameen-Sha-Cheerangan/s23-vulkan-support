@@ -49,7 +49,7 @@ show_info() {
     echo "• You must re-run this script after every device reboot to keep Vulkan active."
     echo ""
     echo "• If you have blacklisted apps via the Game Driver blacklist and want to remove all of them, run:"
-    echo -e "  ${YELLOW}settings put global game_driver_blacklist ''${RESET}"
+    echo -e "  ${YELLOW}rish -c "settings put global game_driver_blacklist ''"${RESET}"
     echo "  This will clear the blacklist so all apps can use the Game Driver again."
     echo ""
     echo "• If you experience issues, simply reboot your device."
@@ -58,7 +58,7 @@ show_info() {
 }
 
 while true; do
-    set -x  # Enable trace mode
+    # set -x  # Enable trace mode
     clear
 
     echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
@@ -77,8 +77,8 @@ while true; do
     case $choice in
         1)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
-            echo "${GREEN}1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)${RESET}"
-            echo "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]${RESET}"
+            echo -e "${GREEN}1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)${RESET}"
+            echo -e "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]${RESET}"
             echo ""
             echo "   Note: Some users have reported that using the Aggressive option can cause:"
             echo "     - The default browser and default keyboard to be reset."
@@ -88,6 +88,7 @@ while true; do
             echo "   (Many thanks to Fun-Flight4427 and ActualMountain7899 for reporting the bug and finding a solution.)"
             echo "   This information and workaround are based on reports and documentation from the GAMA project:"
             echo -e "${BLUE}   https://github.com/popovicialinc/gama${RESET}"
+            echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
             if [[ $aggressive_choice == "1" ]]; then
@@ -99,24 +100,19 @@ while true; do
                 rish -c "am crash com.google.android.inputmethod.latin b"
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
-                echo "here"
-                # touch all_packages.txt
-                # touch app_to_restart.txt
-                # touch force_stop_errors.log
-                # touch running_apps.log
-                # '
-                #     for pkg in $(pm list packages | grep -v ia.mo |grep -v com.netflix.mediaclient | grep -v com.termux |cut -f2 -d:); do
-                #         echo "$pkg"
-                #     done
-                # ' 2>/dev/null | sort > all_packages.txt
+                > "app_to_restart.txt"
+                > "app_to_restart.txt"
+                > "force_stop_errors.log"
+                > "running_apps.log"
+                rish -c "dumpsys package | grep 'Package \[' | grep -v ia.mo | cut -d '[' -f2 | cut -d ']' -f1 | grep -v com.google.android.trichromelibrary*" |grep -v com.netflix.mediaclient| sort -u > all_packages.txt
 
-                # dumpsys activity processes > running_apps.log
+                rish -c "dumpsys activity processes" > running_apps.log
 
-                # while read pkg; do
-                #     if grep -q "$pkg" running_apps.log; then
-                #         echo "$pkg" >> "app_to_restart.txt"
-                #     fi
-                # done < all_packages.txt
+                while read pkg; do
+                    if grep -q "$pkg" running_apps.log; then
+                        echo "$pkg" >> "app_to_restart.txt"
+                    fi
+                done < all_packages.txt
 
                 # "
                 #     setprop debug.hwui.renderer skiavk;
@@ -149,7 +145,7 @@ while true; do
             echo -e "${YELLOW}Reboot your device to revert to OpenGL. If you want the script to do it for you, type 'YES' to continue.${RESET}"
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
-                reboot
+                rish -c "reboot"
             else
                 echo -e "${RED}❌ Reboot canceled.${RESET}"
             fi
@@ -167,15 +163,21 @@ while true; do
                     # Print each package on a new line for readability
                     echo "$current_blacklist" | tr ',' '\n'
                 fi
-                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 blacklist=$(paste -sd, blacklist.txt)
                 rish -c "settings put global game_driver_blacklist '$blacklist'"
-                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
+                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist.${RESET}"
                 echo "  This step is based on a recommendation from a Reddit user:"
-                echo "  https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/"
+                echo -e "${BLUE}  https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/${RESET}"
                 echo "  (It may help prevent crashes for some apps, but results may vary.)"
                 echo "  To remove apps from the blacklist, edit blacklist.txt and run this step again."
-                echo -e "${RESET}"
+                echo -e "${BLUE}Updated Game Driver Blacklist:${RESET}"
+                current_blacklist=$(rish -c "settings get global game_driver_blacklist")
+                if [[ -z "$current_blacklist" ]]; then
+                    echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
+                else
+                    # Print each package on a new line for readability
+                    echo "$current_blacklist" | tr ',' '\n'
+                fi
             fi
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
