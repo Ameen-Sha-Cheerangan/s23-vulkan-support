@@ -104,7 +104,7 @@ while true; do
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
-                rish -c "dumpsys package | grep 'Package \[' | grep -v ia.mo | cut -d '[' -f2 | cut -d ']' -f1 | grep -v com.google.android.trichromelibrary*" |grep -v com.netflix.mediaclient| sort -u > all_packages.txt
+                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| sort -u > all_packages.txt
 
                 rish -c "dumpsys activity processes" > running_apps.log
 
@@ -113,16 +113,15 @@ while true; do
                         echo "$pkg" >> "app_to_restart.txt"
                     fi
                 done < all_packages.txt
-
-                # "
-                #     setprop debug.hwui.renderer skiavk;
-                #     for a in \$(pm list packages | grep -v ia.mo | cut -f2 -d:); do
-                #         am force-stop \"\$a\" &
-                #     done
-                #     wait
-                # " > /dev/null 2> force_stop_errors.log
-                # echo ""
-
+                > "force_stop_errors.log"
+                rish -c "setprop debug.hwui.renderer skiavk;
+                > stopped_packages.log
+                for a in \$(cat all_packages.txt); do
+                    am force-stop \"\$a\" && echo \"\$a stopped\" >> stopped_packages.log &
+                done
+                wait
+                " > /dev/null 2> force_stop_errors.log
+                echo ""
                 # echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
 
