@@ -159,8 +159,16 @@ while true; do
             if [[ ! -f blacklist.txt ]]; then
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
+                echo -e "${BLUE}Current Game Driver Blacklist:${RESET}"
+                current_blacklist=$(rish -c "settings get global game_driver_blacklist")
+                if [[ -z "$current_blacklist" ]]; then
+                    echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
+                else
+                    # Print each package on a new line for readability
+                    echo "$current_blacklist" | tr ',' '\n'
+                fi
+                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 blacklist=$(paste -sd, blacklist.txt)
-                echo "blacklist=$blacklist"
                 rish -c "settings put global game_driver_blacklist '$blacklist'"
                 echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 echo "  This step is based on a recommendation from a Reddit user:"
