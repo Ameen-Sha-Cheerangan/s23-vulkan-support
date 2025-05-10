@@ -117,7 +117,8 @@ while true; do
                 rish -c "setprop debug.hwui.renderer skiavk"
 
                 for a in $(cat all_packages.txt); do
-                    rish -c "am force-stop \"$a\"" && echo "$a stopped" >> stopped_packages.log
+                    # rish -c "am force-stop \"$a\""
+                    echo "$a stopped" >> stopped_packages.log
                 done
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
