@@ -113,13 +113,18 @@ while true; do
                         echo "$pkg" >> "app_to_restart.txt"
                     fi
                 done < all_packages.txt
-                > "stopped_packages.log"
-                rish -c "setprop debug.hwui.renderer skiavk"
+                rish -c "
+                    # Count total packages for progress reporting
+                    total=\$(dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1 | grep -v 'ia.mo' | grep -v 'com.google.android.trichromelibrary' | grep -v 'com.netflix.mediaclient' | grep -v 'com.termux' | sort -u | wc -l)
+                    count=0
 
-                for a in $(cat all_packages.txt); do
-                    # rish -c "am force-stop \"$a\""
-                    echo "$a stopped" >> stopped_packages.log
-                done
+                    # Get all packages and filter them directly within rish
+                    for pkg in \$(dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1 | grep -v 'ia.mo' | grep -v 'com.google.android.trichromelibrary' | grep -v 'com.netflix.mediaclient' | grep -v 'com.termux' | sort -u); do
+                        am force-stop \"\$pkg\"
+                        count=\$((count+1))
+                        echo \"\$count/\$total: \$pkg stopped\"
+                    done
+                "
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
