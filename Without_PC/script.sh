@@ -77,8 +77,8 @@ while true; do
     case $choice in
         1)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
-            echo "1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]"
+            echo "${GREEN}1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)${RESET}"
+            echo "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]${RESET}"
             echo ""
             echo "   Note: Some users have reported that using the Aggressive option can cause:"
             echo "     - The default browser and default keyboard to be reset."
@@ -105,7 +105,7 @@ while true; do
                 # touch force_stop_errors.log
                 # touch running_apps.log
                 # '
-                #     for pkg in $(pm list packages | grep -v ia.mo |grep -v com.netflix.mediaclient | cut -f2 -d:); do
+                #     for pkg in $(pm list packages | grep -v ia.mo |grep -v com.netflix.mediaclient | grep -v com.termux |cut -f2 -d:); do
                 #         echo "$pkg"
                 #     done
                 # ' 2>/dev/null | sort > all_packages.txt
@@ -160,7 +160,8 @@ while true; do
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
                 blacklist=$(paste -sd, blacklist.txt)
-                rish -c "settings put global game_driver_blacklist "$blacklist""
+                echo "blacklist=$blacklist"
+                rish -c "settings put global game_driver_blacklist '$blacklist'"
                 echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 echo "  This step is based on a recommendation from a Reddit user:"
                 echo "  https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/"
