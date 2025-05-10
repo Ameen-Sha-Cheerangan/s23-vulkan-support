@@ -90,7 +90,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo "1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended]"
+            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]"
             echo ""
             echo "   Note: Some users have reported that using the Aggressive option can cause:"
             echo "     - The default browser and default keyboard to be reset."
