@@ -113,16 +113,14 @@ while true; do
                         echo "$pkg" >> "app_to_restart.txt"
                     fi
                 done < all_packages.txt
-                > "force_stop_errors.log"
-                rish -c "setprop debug.hwui.renderer skiavk;
-                > stopped_packages.log
-                for a in \$(cat all_packages.txt); do
-                    am force-stop \"\$a\" && echo \"\$a stopped\" >> stopped_packages.log &
+                > "stopped_packages.log"
+                rish -c "setprop debug.hwui.renderer skiavk"
+
+                for a in $(cat all_packages.txt); do
+                    rish -c "am force-stop \"$a\"" && echo "$a stopped" >> stopped_packages.log
                 done
-                wait
-                " > /dev/null 2> force_stop_errors.log
                 echo ""
-                # echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
 
                 # sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
