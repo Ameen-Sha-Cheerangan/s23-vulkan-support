@@ -91,12 +91,12 @@ while true; do
             read -p "Choose [1-2]: " aggressive_choice
 
             if [[ $aggressive_choice == "1" ]]; then
-                setprop debug.hwui.renderer skiavk
-                am crash com.android.systemui
-                am force-stop com.android.settings
-                am force-stop com.sec.android.app.launcher
-                am force-stop com.samsung.android.app.aodservice
-                am crash com.google.android.inputmethod.latin b
+                rish -c "setprop debug.hwui.renderer skiavk"
+                rish -c "am crash com.android.systemui"
+                rish -c "am force-stop com.android.settings"
+                rish -c "am force-stop com.sec.android.app.launcher"
+                rish -c "am force-stop com.samsung.android.app.aodservice"
+                rish -c "am crash com.google.android.inputmethod.latin b"
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
                 echo "here"
@@ -160,7 +160,7 @@ while true; do
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
                 blacklist=$(paste -sd, blacklist.txt)
-                settings put global game_driver_blacklist "$blacklist"
+                rish -c "settings put global game_driver_blacklist "$blacklist""
                 echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 echo "  This step is based on a recommendation from a Reddit user:"
                 echo "  https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/"
