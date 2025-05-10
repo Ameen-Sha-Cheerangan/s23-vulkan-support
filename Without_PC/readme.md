@@ -1,4 +1,4 @@
-# Enable Vulkan Renderer on Samsung S23 Using Shizuku and Termux
+# Enable Vulkan Renderer on Samsung S23 Using Shizuku and Termux(Don't use this now, testing phase)
 
 A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy S23 device **directly on-device**-no computer required. This method uses [Shizuku](https://shizuku.rikka.app/) and [Termux](https://termux.com/) to grant privileged access for system property changes, improving graphics performance for gaming and demanding apps.
 
