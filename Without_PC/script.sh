@@ -132,27 +132,16 @@ while true; do
 
                 echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
-                rish -c '
-                    dumpsys appwidget |
-                    sed -n "/^Widgets:/,/^Hosts:/p" |
-                    grep "provider=" |
-                    sed -n "s/.*ComponentInfo.{\([^/]*\)\/.*/\1/p" |
-                    sort -u
-                ' > app_to_restart.txt
 
-                # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt | sort -u >> app_to_restart.txt
 
+                rish -c "am force-stop com.sec.android.app.launcher"
+                cmds='';
+                while read pkg; do cmds+="rish -c monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1;" done < app_to_restart.txt
+                rish -c "$cmds"
+                rish -c "monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
 
-                # sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
-
-                # am force-stop com.sec.android.app.launcher
-                # sleep 2
-                # monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1
-
-                # "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
-
-                # echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
-
+                echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
             # rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
