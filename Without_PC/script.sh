@@ -121,13 +121,27 @@ while true; do
                     count=0
 
                     while IFS= read -r pkg; do
-                        am force-stop \"\$pkg\"
+                        am force-stop "$pkg"
                         count=\$((count + 1))
                         printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
                     done < /sdcard/all_packages.txt
                     echo ""
                     echo \"All \$total packages have been stopped successfully.\"
                 "
+
+
+                #     # Count total packages for progress reporting
+                # total=\$(wc -l < /sdcard/all_packages.txt)
+                # count=0
+
+                # while IFS= read -r pkg; do
+                #     rish -c "am force-stop \"\$pkg\""
+                #     count=\$((count + 1))
+                #     printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
+                # done < /sdcard/all_packages.txt
+                echo ""
+                echo \"All \$total packages have been stopped successfully.\"
+
 
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
