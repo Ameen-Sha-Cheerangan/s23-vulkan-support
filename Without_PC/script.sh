@@ -129,16 +129,17 @@ while true; do
                 #     echo ""
                 #     echo \"All \$total packages have been stopped successfully.\"
                 # "
-                total=$(wc -l < all_packages.txt)
+                mapfile -t packages < all_packages.txt
+                total=${#packages[@]}
                 count=0
 
-                while read pkg; do
-                    # rish -c "am force-stop $pkg"
-                    echo "$pkg"
+                for pkg in "${packages[@]}"; do
+                    rish -c "am force-stop $pkg"
                     count=$((count + 1))
-                    printf "Progress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
-                done < all_packages.txt
-                echo ""
+                    printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
+                done
+
+                echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
 
