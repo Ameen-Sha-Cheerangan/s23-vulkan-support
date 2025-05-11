@@ -100,7 +100,8 @@ while true; do
                 > "running_apps.log"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
-                cat temp_packages.txt | grep -v -f keyboard_packages.txt |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" | sort -u > all_packages.txt
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
+                # |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" |
                 rm -f temp_packages.txt keyboard_packages.txt
                 rish -c "dumpsys activity processes" > running_apps.log
 
@@ -121,23 +122,15 @@ while true; do
                     cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
                 done
 
-                cmds+='echo; echo "✅ Vulkan forced! All apps have been stopped."'
-
                 rish -c "$cmds"
-
-
                 echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
 
                 rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
 
                 cmds='am force-stop com.sec.android.app.launcher;'
-                total=$(wc -l < app_to_restart.txt)
-                count=0
                 while read pkg; do
                     cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
-                    $count=$((count + 1));
-                    cmds+="echo \"[$count/$total] Restarted: $pkg\"; "
                 done < all_packages.txt
                 cmds+="monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
                 rish -c "$cmds"
