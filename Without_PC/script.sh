@@ -111,7 +111,7 @@ while true; do
                 count=0
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
-                cmds='count=0; total='"$total"'; '
+                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
 
                 for pkg in "${packages[@]}"; do
                     cmds+="am force-stop $pkg; "
