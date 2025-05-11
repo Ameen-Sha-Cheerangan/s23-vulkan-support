@@ -45,9 +45,9 @@ When you select "Switch to Vulkan", you will be prompted to choose how aggressiv
 
 ## Installation / How to switch to Vulkan
 Clone the repository (do this once):
-`git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script.git`
+`git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git`
 
-`cd s23-vulkan-linux-script`
+`cd s23-vulkan-support`
 
 `chmod +x opengl-to-vulkan.sh`
 
@@ -164,9 +164,9 @@ No, this is expected and harmless. This message appears because some apps-such a
 ---
 ## Issues
 
-If you find any issues or have suggestions, please [open an issue](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script/issues).
+If you find any issues or have suggestions, please [open an issue](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/issues).
 
-If you found this tool helpful, please consider giving it a ⭐ on [GitHub](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script)!
+If you found this tool helpful, please consider giving it a ⭐ on [GitHub](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support)!
 
 
 ---
