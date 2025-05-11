@@ -115,29 +115,22 @@ while true; do
                 done < all_packages.txt
 
                 cp all_packages.txt /sdcard/all_packages.txt
-                # rish -c "
-                #     # Count total packages for progress reporting
-                #     total=\$(wc -l < /sdcard/all_packages.txt)
-                #     count=0
 
-                #     while IFS= read -r pkg; do
-                #         am force-stop "$pkg"
-                #         echo "$pkg"
-                #         count=\$((count + 1))
-                #         # printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
-                #     done < /sdcard/all_packages.txt
-                #     echo ""
-                #     echo \"All \$total packages have been stopped successfully.\"
-                # "
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
-                count=0
-
+                cmds=""
                 for pkg in "${packages[@]}"; do
-                    rish -c "am force-stop $pkg"
-                    count=$((count + 1))
-                    printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
+                    cmds+="am force-stop $pkg; "
                 done
+
+                rish -c "$cmds"
+                # count=0
+
+                # for pkg in "${packages[@]}"; do
+                #     rish -c "am force-stop $pkg"
+                #     count=$((count + 1))
+                #     printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
+                # done
 
                 echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
