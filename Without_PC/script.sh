@@ -133,7 +133,8 @@ while true; do
                 count=0
 
                 while read pkg; do
-                    rish -c "am force-stop $pkg"
+                    # rish -c "am force-stop $pkg"
+                    echo "$pkg"
                     count=$((count + 1))
                     printf "Progress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
                 done < all_packages.txt
