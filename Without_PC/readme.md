@@ -72,3 +72,23 @@ A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy 
    - This sets up the `rish` command for privileged operations in Termux.
 
 ---
+
+##Clone the repo and run the script
+
+   ```
+  cd ~ && rm -rf s23-vulkan-linux-script && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script.git && cd s23-vulkan-linux-script/Without_PC && chmod +x script.sh
+   ```
+Follow the instructions.
+
+After normal restart(not the auto-optimization one), you have to apply the script again.
+You can just run (Obviously after connecting to shizuku)
+```
+ cd s23-vulkan-linux-script/Without_PC && ./script.sh
+```
+But I would running this block everytime(You will have internet connection I believe all the time)
+```
+  cd ~ && rm -rf s23-vulkan-linux-script && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script.git && cd s23-vulkan-linux-script/Without_PC && chmod +x script.sh
+```
+By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
+
+
