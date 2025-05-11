@@ -2,7 +2,7 @@
 
 A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy S23 device **directly on-device**-no computer required. This method uses [Shizuku](https://shizuku.rikka.app/) and [Termux](https://termux.com/) to grant privileged access for system property changes, improving graphics performance for gaming and demanding apps.
 
-Credits : https://www.reddit.com/user/adam444555/ for this post : https://www.reddit.com/r/GalaxyS23Ultra/comments/1kbisga/full_tutorial_enable_vulkan_on_s23u_without_pc/ 
+Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kbisga/full_tutorial_enable_vulkan_on_s23u_without_pc/)
 
 ---
 
