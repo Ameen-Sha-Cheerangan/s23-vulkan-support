@@ -51,7 +51,7 @@ Clone the repository (do this once):
 
 `chmod +x opengl-to-vulkan.sh`
 
-**Running (repeat after every device restart):**
+**Running (repeat after every device restart(not needed after auto-optimization restart)):**
 
 `./opengl-to-vulkan.sh`
 
