@@ -73,7 +73,7 @@ A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy 
 
 ---
 
-##Clone the repo and run the script
+## Clone the repo and run the script
 
    ```
   cd ~ && rm -rf s23-vulkan-linux-script && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script.git && cd s23-vulkan-linux-script/Without_PC && chmod +x script.sh
