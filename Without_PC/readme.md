@@ -80,7 +80,7 @@ You can just run (Obviously after connecting to shizuku)
 ```
 But I would running this block everytime(You will have internet connection I believe all the time)
 ```
-  cd ~ && rm -rf s23-vulkan-support && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git && cd s23-vulkan-support/Without_PC && chmod +x script.sh
+  cd ~ && rm -rf s23-vulkan-support && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git && cd s23-vulkan-support/Without_PC && chmod +x script.sh && ./script.sh
 ```
 By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
 
