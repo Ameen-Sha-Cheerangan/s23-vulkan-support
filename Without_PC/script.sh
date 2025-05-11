@@ -135,7 +135,7 @@ while true; do
                 while IFS= read -r pkg; do
                     rish -c "am force-stop $pkg"
                     count=$((count + 1))
-                    printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
+                    printf "Progress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
                 done < all_packages.txt
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
