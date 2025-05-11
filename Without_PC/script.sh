@@ -99,10 +99,12 @@ while true; do
                 > "force_stop_errors.log"
                 > "running_apps.log"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
+                echo "$((wc -l < temp_packages.txt)) packages found."
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
-                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
-                # |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" |
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.#telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" | sort -u > all_packages.txt
                 rm -f temp_packages.txt keyboard_packages.txt
+
+                
                 rish -c "dumpsys activity processes" > running_apps.log
 
                 while read pkg; do
@@ -131,14 +133,14 @@ while true; do
                 cmds='am force-stop com.sec.android.app.launcher;'
                 while read pkg; do
                     cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
-                done < all_packages.txt
+                done < app_to_restart.txt
                 cmds+="monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
                 rish -c "$cmds"
 
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
