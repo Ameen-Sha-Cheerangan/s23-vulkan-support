@@ -69,7 +69,11 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
 ## Clone the repo and run the script
 
    ```
-  cd ~ && rm -rf s23-vulkan-support && git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git && cd s23-vulkan-support/Without_PC && chmod +x script.sh && ./script.sh
+  cd ~ && rm -rf s23-vulkan-support
+  git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git
+  cd s23-vulkan-support/Without_PC
+  chmod +x script.sh
+  ./script.sh
    ```
 Follow the instructions.
 
