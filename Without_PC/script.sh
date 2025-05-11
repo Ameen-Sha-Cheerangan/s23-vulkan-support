@@ -114,7 +114,6 @@ while true; do
                     fi
                 done < all_packages.txt
 
-                cp all_packages.txt /sdcard/all_packages.txt
                 count=0
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
@@ -133,7 +132,16 @@ while true; do
 
                 echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
+                rish -c '
+                    dumpsys appwidget |
+                    sed -n "/^Widgets:/,/^Hosts:/p" |
+                    grep "provider=" |
+                    sed -n "s/.*ComponentInfo.{\([^/]*\)\/.*/\1/p" |
+                    sort -u
+                ' > app_to_restart.txt
+
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+
 
                 # sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
 
