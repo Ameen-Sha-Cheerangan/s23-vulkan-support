@@ -92,12 +92,7 @@ while true; do
             read -p "Choose [1-2]: " aggressive_choice
 
             if [[ $aggressive_choice == "1" ]]; then
-                rish -c "setprop debug.hwui.renderer skiavk"
-                rish -c "am crash com.android.systemui"
-                rish -c "am force-stop com.android.settings"
-                rish -c "am force-stop com.sec.android.app.launcher"
-                rish -c "am force-stop com.samsung.android.app.aodservice"
-                rish -c "am crash com.google.android.inputmethod.latin b"
+                rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b"
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
                 > "app_to_restart.txt"
@@ -134,27 +129,21 @@ while true; do
 
                 rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
 
-                rish -c "am force-stop com.sec.android.app.launcher"
-                cmds='count=0; '
-                mapfile -t restart_packages < app_to_restart.txt
-                total=${#restart_packages[@]}
-                cmds+="total=$total; echo; "
-
-                for pkg in "${restart_packages[@]}"; do
+                cmds='am force-stop com.sec.android.app.launcher;'
+                total=$(wc -l < app_to_restart.txt)
+                count=0
+                while read pkg; do
                     cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
-                    cmds+="count=\$((count + 1)); "
+                    $count=$((count + 1));
                     cmds+="echo \"[$count/$total] Restarted: $pkg\"; "
-                done
-
+                done < all_packages.txt
+                cmds+="monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
                 rish -c "$cmds"
 
-                # cmds='';
-                # while read pkg; do cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "; done < app_to_restart.txt
-                # rish -c "$cmds"
-                rish -c "monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
+                echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            # rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
