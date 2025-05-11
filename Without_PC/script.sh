@@ -100,7 +100,7 @@ while true; do
                 > "running_apps.log"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
-                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" | sort -u > all_packages.txt
                 rm -f temp_packages.txt keyboard_packages.txt
                 rish -c "dumpsys activity processes" > running_apps.log
 
