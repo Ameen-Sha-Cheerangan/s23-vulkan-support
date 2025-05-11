@@ -133,10 +133,10 @@ while true; do
                 count=0
 
                 while IFS= read -r pkg; do
-                    rish -c "am force-stop $pkg" 2>/dev/null
+                    rish -c "am force-stop $pkg"
                     count=$((count + 1))
                     printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
-                done < /sdcard/all_packages.txt
+                done < all_packages.txt
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
