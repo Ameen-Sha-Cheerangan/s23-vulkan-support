@@ -104,7 +104,7 @@ while true; do
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
-                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| sort -u > all_packages.txt
+                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u > all_packages.txt
 
                 rish -c "dumpsys activity processes" > running_apps.log
 
@@ -113,18 +113,23 @@ while true; do
                         echo "$pkg" >> "app_to_restart.txt"
                     fi
                 done < all_packages.txt
+
+                cp all_packages.txt /sdcard/all_packages.txt
                 rish -c "
                     # Count total packages for progress reporting
-                    total=\$(dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1 | grep -v 'ia.mo' | grep -v 'com.google.android.trichromelibrary' | grep -v 'com.netflix.mediaclient' | grep -v 'com.termux' | sort -u | wc -l)
+                    total=\$(wc -l < /sdcard/all_packages.txt)
                     count=0
 
-                    # Get all packages and filter them directly within rish
-                    for pkg in \$(dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1 | grep -v 'ia.mo' | grep -v 'com.google.android.trichromelibrary' | grep -v 'com.netflix.mediaclient' | grep -v 'com.termux' | sort -u); do
-                        am force-stop \"\$pkg\"
-                        count=\$((count+1))
-                        echo \"\$count/\$total: \$pkg stopped\"
-                    done
+                    while IFS= read -r pkg; do
+                        # am force-stop \"\$pkg\"
+                        count=\$((count + 1))
+                        printf \"\\rProgress: \$count/\$total packages stopped\  $pkg\"
+                    done < /sdcard/all_packages.txt
+
+                    echo ""
+                    echo \"All \$total packages have been stopped successfully.\"
                 "
+
                 echo ""
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
                 # dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
