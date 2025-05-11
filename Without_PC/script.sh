@@ -143,7 +143,7 @@ while true; do
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -201,9 +201,11 @@ while true; do
             show_warning
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
-                for pkg in $(pm list packages | cut -f2 -d:); do
-                    monkey -p "$pkg" -c android.intent.category.LAUNCHER 1
+                cmd=''
+                for pkg in $(rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u); do
+                    cmd+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
                 done
+                rish -c "$cmd"
                 echo "⚠️  All apps launched! Close unused apps from Recents immediately."
             else
                 echo "❌ Launch canceled."
