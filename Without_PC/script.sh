@@ -129,10 +129,10 @@ while true; do
                 #     echo ""
                 #     echo \"All \$total packages have been stopped successfully.\"
                 # "
-                total=$(wc -l < /sdcard/all_packages.txt)
+                total=$(wc -l < all_packages.txt)
                 count=0
 
-                while IFS= read -r pkg; do
+                while read pkg; do
                     rish -c "am force-stop $pkg"
                     count=$((count + 1))
                     printf "Progress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
