@@ -101,7 +101,6 @@ while true; do
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
                 > "app_to_restart.txt"
-                > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u > all_packages.txt
@@ -133,14 +132,26 @@ while true; do
                 echo
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
 
-                rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt | sort -u >> app_to_restart.txt
+                rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
 
                 rish -c "am force-stop com.sec.android.app.launcher"
-                cmds='';
-                while read pkg; do cmds+="rish -c monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1;" done < app_to_restart.txt
-                rish -c "$cmds"
-                rish -c "monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
+                cmds='count=0; '
+                mapfile -t restart_packages < app_to_restart.txt
+                total=${#restart_packages[@]}
+                cmds+="total=$total; echo; "
 
+                for pkg in "${restart_packages[@]}"; do
+                    cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
+                    cmds+="count=\$((count + 1)); "
+                    cmds+="echo \"[$count/$total] Restarted: $pkg\"; "
+                done
+
+                rish -c "$cmds"
+
+                # cmds='';
+                # while read pkg; do cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "; done < app_to_restart.txt
+                # rish -c "$cmds"
+                rish -c "monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
             # rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
