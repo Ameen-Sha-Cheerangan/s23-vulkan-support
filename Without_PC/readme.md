@@ -14,18 +14,6 @@ A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy 
 
 ---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Requirements](#requirements)
-- [Tool Setup](#tool-setup)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
-- [Credits](#credits)
-- [License](#license)
-
----
-
 ## Overview
 
 **Vulkan** is a modern, low-overhead graphics API that offers improved performance and efficiency over older APIs like OpenGL-especially in gaming and graphics-heavy applications. This guide shows you how to enable Vulkan on your S23 device without needing a computer, using only Termux and Shizuku.
