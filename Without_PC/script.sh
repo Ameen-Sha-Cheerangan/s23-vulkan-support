@@ -98,8 +98,10 @@ while true; do
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
-                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u > all_packages.txt
-
+                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
+                rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
+                rm -f temp_packages.txt keyboard_packages.txt
                 rish -c "dumpsys activity processes" > running_apps.log
 
                 while read pkg; do
