@@ -115,31 +115,31 @@ while true; do
                 done < all_packages.txt
 
                 cp all_packages.txt /sdcard/all_packages.txt
-                rish -c "
-                    # Count total packages for progress reporting
-                    total=\$(wc -l < /sdcard/all_packages.txt)
-                    count=0
-
-                    while IFS= read -r pkg; do
-                        am force-stop "$pkg"
-                        echo "$pkg"
-                        count=\$((count + 1))
-                        # printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
-                    done < /sdcard/all_packages.txt
-                    echo ""
-                    echo \"All \$total packages have been stopped successfully.\"
-                "
-
-
+                # rish -c "
                 #     # Count total packages for progress reporting
-                # total=\$(wc -l < /sdcard/all_packages.txt)
-                # count=0
+                #     total=\$(wc -l < /sdcard/all_packages.txt)
+                #     count=0
 
-                # while IFS= read -r pkg; do
-                #     rish -c "am force-stop \"\$pkg\""
-                #     count=\$((count + 1))
-                #     printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
-                # done < /sdcard/all_packages.txt
+                #     while IFS= read -r pkg; do
+                #         am force-stop "$pkg"
+                #         echo "$pkg"
+                #         count=\$((count + 1))
+                #         # printf \"\\rProgress: %d/%d packages stopped - %s\" \$count \$total \"\$pkg\"
+                #     done < /sdcard/all_packages.txt
+                #     echo ""
+                #     echo \"All \$total packages have been stopped successfully.\"
+                # "
+                total=$(wc -l < /sdcard/all_packages.txt)
+                count=0
+
+                while IFS= read -r pkg; do
+                    rish -c "am force-stop $pkg" 2>/dev/null
+                    count=$((count + 1))
+                    printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" "$pkg"
+                done < /sdcard/all_packages.txt
+
+                echo
+                echo "All $total packages have been processed."
                 echo ""
                 echo \"All \$total packages have been stopped successfully.\"
 
