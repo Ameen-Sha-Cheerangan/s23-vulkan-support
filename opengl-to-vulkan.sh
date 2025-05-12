@@ -69,7 +69,7 @@ show_info() {
 }
 
 while true; do
-    # set -x  # Enable trace mode
+    set -x  # Enable trace mode
     clear
 
     echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
@@ -113,7 +113,7 @@ while true; do
                         echo "$pkg"
                     done
                 ' 2>/dev/null | sort > temp_packages.txt
-                adb shell 'ime list -s | cut -d'/' -f1"' > keyboard_packages.txt
+                adb shell ime list -s | cut -d'/' -f1 > keyboard_packages.txt
                 cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 adb shell dumpsys activity processes > running_apps.log
 
