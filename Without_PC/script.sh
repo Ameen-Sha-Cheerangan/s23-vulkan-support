@@ -90,7 +90,7 @@ while true; do
             read -p "Choose [1-2]: " aggressive_choice
 
             if [[ $aggressive_choice == "1" ]]; then
-                rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b"
+                rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b" > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
                 > "all_packages.txt"
