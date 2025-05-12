@@ -81,7 +81,6 @@ while true; do
             echo -e "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]${RESET}"
             echo ""
             echo "   Note: Some users have reported that using the Aggressive option can cause:"
-            echo "     - The default browser and default keyboard to be reset."
             echo "     - Loss of WiFi-Calling/VoLTE capability."
             echo "       Fix: Go to Settings > Connections > SIM manager, then toggle SIM 1/2 off and back on."
             echo ""
@@ -95,13 +94,14 @@ while true; do
                 rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b"
                 echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
             else
+                > "all_packages.txt"
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
-                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
+                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary*" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" | sort -c > temp_packages.txt
                 echo "$(wc -l < temp_packages.txt) packages found."
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
-                cat temp_packages.txt | grep -v -f keyboard_packages.txt |  grep -v "com.samsung.android.ims" | grep -v "com.sec.imsservice" | grep -v "com.sec.unifiedwfc" | grep -v "com.android.providers.#telephony" | grep -v "com.android.providers.telephony.auto_generated_characteristics_rro" | sort -u > all_packages.txt
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 echo "After filtering $(wc -l < all_packages.txt) packages found."
 
                 rm -f temp_packages.txt keyboard_packages.txt
@@ -115,11 +115,15 @@ while true; do
                     fi
                 done < all_packages.txt
 
+                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
+                # while read pkg; do
+                #     cmds+="am force-stop $pkg; "
+                #     cmds+='count=$((count + 1)); '
+                #     cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
+                # done < all_packages.txt
                 count=0
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
-                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
-
                 for pkg in "${packages[@]}"; do
                     cmds+="am force-stop $pkg; "
                     cmds+='count=$((count + 1)); '
@@ -131,18 +135,20 @@ while true; do
                 echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
 
                 rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
+                sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
+                rish -c "am force-stop com.sec.android.app.launcher; sleep 2; monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
 
-                cmds='am force-stop com.sec.android.app.launcher;'
+                cmds=''
                 while read pkg; do
                     cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
                 done < app_to_restart.txt
-                cmds+="monkey -p com.sec.android.app.launcher -c android.intent.category.LAUNCHER 1"
+
                 rish -c "$cmds"
 
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
