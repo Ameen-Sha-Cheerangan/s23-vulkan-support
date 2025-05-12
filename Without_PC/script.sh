@@ -98,13 +98,14 @@ while true; do
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
+                > "temp_packages.txt"
+                > "keyboard_packages.txt"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary*" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" | sort -c > temp_packages.txt
                 echo "$(wc -l < temp_packages.txt) packages found."
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
                 cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 echo "After filtering $(wc -l < all_packages.txt) packages found."
 
-                rm -f temp_packages.txt keyboard_packages.txt
 
 
                 rish -c "dumpsys activity processes" > running_apps.log
@@ -148,7 +149,7 @@ while true; do
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
