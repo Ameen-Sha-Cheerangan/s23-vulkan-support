@@ -8,9 +8,16 @@ BLUE="\e[34m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
+
 clear
+# Get the current auto-rotation setting
+auto_rotation=$(rish -c "settings get system accelerometer_rotation")
+
+# Get the current accessibility services
+CURRENT_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+
 echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
-echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings.${RESET}"
+echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings .${RESET}"
 echo "I've tested it extensively on my own device and haven't seen any issues, but just to be safe (for both of us!), I'm including this notice."
 echo ""
 echo -e "${GREEN}Please use responsibly and do not use this tool for any harmful or inappropriate purposes.${RESET}"
@@ -24,35 +31,33 @@ echo "This is not an official Samsung or Google product."
 echo ""
 echo "Problems are very unlikely, but always proceed with care!"
 echo ""
-read -n1 -s -r -p "Press any key to continue..."
+read -n1 -s -r -p "Press any key to return to the menu..."
 
-
-
-show_warning() {
-    clear
-    echo "⚠️  WARNING: Launching all apps may:"
-    echo "- Wake sleeping/background apps"
-    echo "- Disrupt notification delivery"
-    echo "- Increase battery consumption temporarily"
-    echo ""
-    echo "ℹ️  In rare cases if something might not load this might fix it. But I think you can directly launch it, that would be better"
-    echo ""
+cleanup() {
+    rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
+    echo -e "${YELLOW}Temporary files cleaned up.${RESET}"
 }
+trap cleanup EXIT
 
 show_info() {
     clear
     echo -e "${BOLD}${BLUE}==== Info & Help ==== ${RESET}"
     echo ""
     echo "• This script forces Vulkan rendering on your Samsung S23 device."
-    echo "• Forcing Vulkan can improve performance and reduce heat."
+    echo "• Forcing Vulkan can improve performance, reduce heat, and improve battery life, it also helps with lag. (As per the reddit community)"
     echo "• To revert to OpenGL, simply RESTART your device."
     echo "• You must re-run this script after every device reboot to keep Vulkan active."
+    echo -e "${GREEN}• Note: Samsung's auto optimization restarts (background app closures) will NOT reset Vulkan rendering - only a full device reboot will revert to OpenGL.${RESET}"
     echo ""
-    echo "• If you have blacklisted apps via the Game Driver blacklist and want to remove all of them, run:"
-    echo -e "  ${YELLOW}rish -c "settings put global game_driver_blacklist ''"${RESET}"
+    echo -e "${BOLD}Blacklist Management:${RESET}"
+    echo "• To add apps to blacklist: Edit blacklist.txt and add one package name per line"
+    echo "  Example package names: com.example.app"
+    echo "• To remove apps from blacklist: Delete the package name from blacklist.txt, and re-run the step 3 in the menu."
+    echo "• To clear all blacklisted apps, run:"
+    echo -e "  ${YELLOW}rish -c \"settings put global game_driver_blacklist ''\"${RESET}"
     echo "  This will clear the blacklist so all apps can use the Game Driver again."
     echo ""
-    echo "• If you experience issues, simply reboot your device."
+    echo "If you experience issues, simply reboot your device."
     echo ""
     read -n1 -s -r -p "Press any key to return to the menu..."
 }
@@ -61,32 +66,26 @@ while true; do
     # set -x  # Enable trace mode
     clear
 
-    echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
-    echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool (Linux) ==== ${RESET}"
+    echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
+    echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v${VERSION} (Mobile) ==== ${RESET}"
     echo "1) Switch to Vulkan(Recommended)"
     echo "2) Switch to OpenGL (Reboot Device)"
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
     echo "5) Exit"
-    echo "6) Launch All Apps (See Warnings, Not at all recommended)"
+    echo "6) Turn GPUWatch On/Off"
+    echo "7) Check for Updates"
 
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
+    echo ""
     read -p "Choose [1-6]: " choice
 
     case $choice in
         1)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
-            echo -e "${GREEN}1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)${RESET}"
-            echo -e "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]${RESET}"
-            echo ""
-            echo "   Note: Some users have reported that using the Aggressive option can cause:"
-            echo "     - Loss of WiFi-Calling/VoLTE capability."
-            echo "       Fix: Go to Settings > Connections > SIM manager, then toggle SIM 1/2 off and back on."
-            echo ""
-            echo "   (Many thanks to Fun-Flight4427 and ActualMountain7899 for reporting the bug and finding a solution.)"
-            echo "   This information and workaround are based on reports and documentation from the GAMA project:"
-            echo -e "${BLUE}   https://github.com/popovicialinc/gama${RESET}"
+            echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
+            echo -e "${GREEN}2) Aggressive ${YELLOW}[Recommended]${RESET} (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -100,11 +99,11 @@ while true; do
                 > "running_apps.log"
                 > "temp_packages.txt"
                 > "keyboard_packages.txt"
-                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary*" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" | sort -c > temp_packages.txt
-                echo "$(wc -l < temp_packages.txt) packages found."
+                rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary.*" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
                 cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
-                echo "After filtering $(wc -l < all_packages.txt) packages found."
+                echo "$(wc -l < temp_packages.txt) packages found."
+                echo "After filtering keyboard package$(wc -l < all_packages.txt) packages found."
 
 
 
@@ -149,7 +148,8 @@ while true; do
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
-            #rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
+            rish -c "settings put system accelerometer_rotation $auto_rotation"
+            rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -199,28 +199,23 @@ while true; do
         5)
             echo -e "${GREEN}Thank you for using the S23/S23+/S23U Vulkan Rendering Tool!${RESET}"
             echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
-            echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
+            echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
             echo -e "For updates, visit the GitHub repo above."
             exit 0
             ;;
         6)
-            show_warning
-            read -p "Type 'YES' to continue: " confirm
-            if [[ $confirm == "YES" ]]; then
-                cmd=''
-                for pkg in $(rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u); do
-                    cmd+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
-                done
-                rish -c "$cmd"
-                echo "⚠️  All apps launched! Close unused apps from Recents immediately."
-            else
-                echo "❌ Launch canceled."
-            fi
+            echo -e "${BOLD}${YELLOW}GPUWatch cannot be enabled via ADB.${RESET}"
+            echo ""
+            echo -e "${GREEN}To enable GPUWatch, follow these steps on your device:${RESET}"
+            echo "1. Go to Settings > Developer Options > GPU Watch"
+            echo "2. Toggle ON"
+            echo ""
+            echo -e "${YELLOW}You will see a persistent notification in the status bar, allowing you to control the overlay.${RESET}"
+            echo ""
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
         *)
             echo -e "${RED}Invalid choice${RESET}"
-            sleep 1
             ;;
     esac
 done
