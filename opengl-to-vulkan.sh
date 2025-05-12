@@ -69,7 +69,7 @@ show_info() {
 }
 
 while true; do
-    set -x  # Enable trace mode
+    #set -x  # Enable trace mode
     clear
 
     echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-linux-script${RESET}"
