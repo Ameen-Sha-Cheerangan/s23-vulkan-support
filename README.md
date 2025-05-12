@@ -2,7 +2,7 @@
 
 A simple menu-driven Bash script to force Vulkan rendering on any Samsung Galaxy S23 variant via ADB from Linux.  
 Tested by the author on S23U, and based on community recommendations, this tool may improve performance, reduce device heat, and extend battery life.  
-**All changes are temporary and revert on device reboot.**
+**All changes are temporary and revert on device reboot.(not the auto-optimization restart)**
 
 ---
 
