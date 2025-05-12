@@ -90,16 +90,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo "1) Normal (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended if you can read little more for the workarounds]"
-            echo ""
-            echo "   Note: Some users have reported that using the Aggressive option can cause:"
-            echo "     - The default browser and default keyboard to be reset."
-            echo "     - Loss of WiFi-Calling/VoLTE capability."
-            echo "       Fix: Go to Settings > Connections > SIM manager, then toggle SIM 1/2 off and back on."
-            echo ""
-            echo "   (Many thanks to Fun-Flight4427 and ActualMountain7899 for reporting the bug and finding a solution.)"
-            echo "   This information and workaround are based on reports and documentation from the GAMA project:"
-            echo -e "${BLUE}   https://github.com/popovicialinc/gama${RESET}"
+            echo "2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; ensures Vulkan is applied everywhere) [Recommended]"
             read -p "Choose [1-2]: " aggressive_choice
 
             if [[ $aggressive_choice == "1" ]]; then
@@ -113,14 +104,17 @@ while true; do
             else
                 > "all_packages.txt"
                 > "app_to_restart.txt"
+                > "temp_packages.txt"
+                > "keyboard_packages.txt"
                 > force_stop_errors.log
                 > "running_apps.log"
                 adb shell '
                     for pkg in $(pm list packages | grep -v ia.mo |grep -v com.netflix.mediaclient | cut -f2 -d:); do
                         echo "$pkg"
                     done
-                ' 2>/dev/null | sort > all_packages.txt
-
+                ' 2>/dev/null | sort > temp_packages.txt
+                adb shell 'ime list -s | cut -d'/' -f1"' > keyboard_packages.txt
+                cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 adb shell dumpsys activity processes > running_apps.log
 
                 while read pkg; do
@@ -152,7 +146,7 @@ while true; do
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
 
             fi
-            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log
+            rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
