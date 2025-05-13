@@ -34,7 +34,7 @@ read -n1 -s -r -p "Press any key to return to the menu..."
 
 
 cleanup() {
-    rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
+    rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt filtered_packages.txt
     echo -e "${YELLOW}Temporary files cleaned up.${RESET}"
 }
 trap cleanup EXIT
@@ -124,6 +124,7 @@ while true; do
                 > "keyboard_packages.txt"
                 > "force_stop_errors.log"
                 > "running_apps.log"
+                > "filtered_packages.txt"
                 adb shell pm list packages 2>/dev/null| grep -v ia.mo |grep -v com.netflix.mediaclient | cut -f2 -d: | sort > temp_packages.txt
 
                 adb shell ime list -s | cut -d'/' -f1 > keyboard_packages.txt
@@ -143,6 +144,9 @@ while true; do
                     read -n1 -s -r -p "Press any key to return to the menu..."
                     continue
                 fi
+
+                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking
+
                 # total=$(wc -l < all_packages.txt)
                 # count=0
 
@@ -152,7 +156,7 @@ while true; do
                     cmds+="am force-stop $pkg; "
                     # echo "$count : $pkg"
                     # cmds+="echo -n \"\rProgress: $count/$total packages stopped - $pkg\"; "
-                done < all_packages.txt
+                done < filtered_packages.txt
 
                 adb shell "$cmds"
                 echo ""
