@@ -132,6 +132,7 @@ This is not an official Samsung or Google product.
 
 - Original Windows script and concept: https://github.com/popovicialinc/gama
 - Game Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
+- Thanks for testing : [Verix](https://github.com/Veriiix)
 ---
 
 ## How to Check if Vulkan is Active
