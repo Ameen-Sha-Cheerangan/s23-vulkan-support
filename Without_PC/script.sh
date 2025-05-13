@@ -105,7 +105,7 @@ while true; do
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
                 cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 echo "$(wc -l < temp_packages.txt) packages found."
-                echo "After filtering keyboard package$(wc -l < all_packages.txt) packages found."
+                echo "After filtering keyboard package $(wc -l < all_packages.txt) packages found."
 
                 rish -c "dumpsys activity processes" > running_apps.log
 
@@ -124,6 +124,7 @@ while true; do
                 # to prevent wifi calling from breaking
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l all_packages.txt)
+                echo "After filtering network related packages $total packages found."
                 cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
                 count=0
                 mapfile -t packages < all_packages.txt
