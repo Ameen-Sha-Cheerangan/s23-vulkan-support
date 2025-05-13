@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+z#!/data/data/com.termux/files/usr/bin/bash
 
 # Color codes
 RED="\e[31m"
@@ -34,7 +34,7 @@ echo ""
 read -n1 -s -r -p "Press any key to return to the menu..."
 
 cleanup() {
-    rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt
+    rm -f all_packages.txt app_to_restart.txt force_stop_errors.log running_apps.log temp_packages.txt keyboard_packages.txt filtered_packages.txt
     echo -e "${YELLOW}Temporary files cleaned up.${RESET}"
 }
 trap cleanup EXIT
@@ -79,7 +79,7 @@ while true; do
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
     echo ""
-    read -p "Choose [1-6]: " choice
+    read -p "Choose [1-7]: " choice
 
     case $choice in
         1)
@@ -99,13 +99,13 @@ while true; do
                 > "running_apps.log"
                 > "temp_packages.txt"
                 > "keyboard_packages.txt"
+                > "filtered_packages.txt"
                 rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary.*" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf" > temp_packages.txt
+
                 rish -c "ime list -s | cut -d'/' -f1" > keyboard_packages.txt #to avoid force-stopping the default keyboard
                 cat temp_packages.txt | grep -v -f keyboard_packages.txt | sort -u > all_packages.txt
                 echo "$(wc -l < temp_packages.txt) packages found."
                 echo "After filtering keyboard package$(wc -l < all_packages.txt) packages found."
-
-
 
                 rish -c "dumpsys activity processes" > running_apps.log
 
@@ -121,6 +121,9 @@ while true; do
                 #     cmds+='count=$((count + 1)); '
                 #     cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
                 # done < all_packages.txt
+                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt
+                # to prevent wifi calling from breaking
+                mv filtered_packages.txt all_packages.txt
                 count=0
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
