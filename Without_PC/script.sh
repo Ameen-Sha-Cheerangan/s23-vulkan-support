@@ -123,17 +123,27 @@ while true; do
                 grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt
                 # to prevent wifi calling from breaking
                 mv filtered_packages.txt all_packages.txt
-                total=$(wc -l all_packages.txt)
+                total=$(wc -l < all_packages.txt)
                 echo "$total packages found."
-                cmds="setprop debug.hwui.renderer skiavk; total=$(wc -l all_packages.txt); count=0; "
 
-                mapfile -t packages < all_packages.txt
-                total=${#packages[@]}
-                for pkg in "${packages[@]}"; do
+
+                cmds="setprop debug.hwui.renderer skiavk;"
+                count=0
+                while read pkg; do
+                    count=$((count + 1))
                     cmds+="am force-stop $pkg; "
-                    cmds+="count=\$((count + 1)); "
-                    cmds+="printf \"\\rProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
-                done
+                    cmds+="echo -n \"\rProgress: $count/$total packages stopped - $pkg\"; "
+                done < all_packages.txt
+
+                rish -c "$cmds"
+
+                # cmds="setprop debug.hwui.renderer skiavk; total=$total; count=0; "
+
+                # while read pkg; do
+                #     cmds+="am force-stop \"$pkg\"; "
+                #     cmds+="count=\$((count + 1)); "
+                #     cmds+="printf \"\\rProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
+                # done < all_packages.txt
 
                 rish -c "$cmds"
                 echo
