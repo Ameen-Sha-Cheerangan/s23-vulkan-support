@@ -1,4 +1,4 @@
-z#!/data/data/com.termux/files/usr/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
 # Color codes
 RED="\e[31m"
@@ -115,7 +115,6 @@ while true; do
                     fi
                 done < all_packages.txt
 
-                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
                 # while read pkg; do
                 #     cmds+="am force-stop $pkg; "
                 #     cmds+='count=$((count + 1)); '
@@ -124,6 +123,8 @@ while true; do
                 grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt
                 # to prevent wifi calling from breaking
                 mv filtered_packages.txt all_packages.txt
+                total=$(wc -l all_packages.txt)
+                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
                 count=0
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
