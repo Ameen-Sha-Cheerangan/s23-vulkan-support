@@ -125,25 +125,12 @@ while true; do
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l < all_packages.txt)
                 echo "$total packages found."
-
+                echo -e "${BLUE}Stopping all apps...Please wait...${RESET}"
 
                 cmds="setprop debug.hwui.renderer skiavk;"
-                count=0
                 while read pkg; do
-                    count=$((count + 1))
                     cmds+="am force-stop $pkg; "
-                    cmds+="printf \"\\r\\033[KProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
                 done < all_packages.txt
-
-
-                # cmds="setprop debug.hwui.renderer skiavk; total=$total; count=0; "
-
-                # while read pkg; do
-                #     cmds+="am force-stop \"$pkg\"; "
-                #     cmds+="count=\$((count + 1)); "
-                #     cmds+="printf \"\\rProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
-                # done < all_packages.txt
-
 
                 rish -c "$cmds"
                 echo
