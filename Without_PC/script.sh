@@ -135,7 +135,6 @@ while true; do
                     cmds+="printf \"\\r\\033[KProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
                 done < all_packages.txt
 
-                rish -c "$cmds"
 
                 # cmds="setprop debug.hwui.renderer skiavk; total=$total; count=0; "
 
@@ -144,6 +143,7 @@ while true; do
                 #     cmds+="count=\$((count + 1)); "
                 #     cmds+="printf \"\\rProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
                 # done < all_packages.txt
+
 
                 rish -c "$cmds"
                 echo
