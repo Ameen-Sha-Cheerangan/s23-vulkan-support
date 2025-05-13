@@ -125,14 +125,15 @@ while true; do
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l all_packages.txt)
                 echo "After filtering network related packages $total packages found."
-                cmds='setprop debug.hwui.renderer skiavk; count=0; total='"$total"'; '
-                count=0
+                cmds="setprop debug.hwui.renderer skiavk; total=$total; count=0; "
+                cmds="total=$total; count=0; "
+
                 mapfile -t packages < all_packages.txt
                 total=${#packages[@]}
                 for pkg in "${packages[@]}"; do
                     cmds+="am force-stop $pkg; "
-                    cmds+='count=$((count + 1)); '
-                    cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
+                    cmds+="count=\$((count + 1)); "
+                    cmds+="printf \"\\rProgress: %d/%d packages stopped - %s\" \"\$count\" \"\$total\" \"$pkg\"; "
                 done
 
                 rish -c "$cmds"
