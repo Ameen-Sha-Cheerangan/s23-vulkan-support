@@ -62,10 +62,15 @@ show_info() {
     echo ""
     read -n1 -s -r -p "Press any key to return to the menu..."
 }
+skip_clear=false
 
 while true; do
     # set -x  # Enable trace mode
-    clear
+    if [ "$skip_clear" = false ]; then
+        clear
+    else
+        skip_clear=false  # Reset after skipping once
+    fi
 
     echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
     echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v${VERSION} (Mobile) ==== ${RESET}"
@@ -239,7 +244,7 @@ while true; do
                 echo -e "${YELLOW}If you want to update, please exit this running program and run these commands:${RESET}"
                 echo -e "${YELLOW}Commands:${RESET}"
                 echo -e "${GREEN}cd ~${RESET}"
-                echo -e "${GREEN}rm -rf s23-vulkan-*{$RESET}"
+                echo -e "${GREEN}rm -rf s23-vulkan-*${RESET}"
                 echo -e "${GREEN}wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip${RESET}"
                 echo -e "${GREEN}unzip $latest_version*.zip && cd s23-vulkan-support-$latest_version && cd Without_PC${RESET}"
                 echo -e "${GREEN}chmod +x script.sh${RESET}"
