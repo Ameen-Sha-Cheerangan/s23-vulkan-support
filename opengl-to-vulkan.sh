@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.2.4"
+VERSION="2.2.5"
 
 # Color codes
 RED="\e[31m"
@@ -272,9 +272,9 @@ while true; do
                 echo -e "${RED}A new version (${latest_version}) is available. You are using v${VERSION}.${RESET}"
                 echo -e "${YELLOW}If you want to update, please exit this running program and run these commands:${RESET}"
                 echo -e "${YELLOW}Commands:${RESET}"
-                echo -e "${GREEN}cd .. && rm -rf s23-vulkan-support-$VERSION${RESET}"
+                echo -e "${GREEN}cd .. && cd .. && rm -rf $VERSION*${RESET}"
                 echo -e "${GREEN}wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip${RESET}"
-                echo -e "${GREEN}unzip s23-vulkan-support-$latest_version*.zip && cd s23-vulkan-support-$latest_version${RESET}"
+                echo -e "${GREEN}unzip $latest_version*.zip && cd $latest_version && cd s23-vulkan-support-$latest_version${RESET}"
                 echo -e "${GREEN}chmod +x opengl-to-vulkan.sh${RESET}"
                 echo -e "${YELLOW}Then run the script:${RESET}"
                 echo -e "${GREEN}./opengl-to-vulkan.sh${RESET}"
