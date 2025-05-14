@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.0"
+VERSION="2.3.1"
 
 # Color codes
 RED="\e[31m"
@@ -257,7 +257,6 @@ while true; do
                     echo -e "${BLUE}$release_notes${RESET}"
                 fi
             fi
-            sleep 2;
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
         *)
