@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.1"
+VERSION="2.3.2"
 
 # Color codes
 RED="\e[31m"
