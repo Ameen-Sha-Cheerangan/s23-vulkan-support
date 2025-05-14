@@ -257,6 +257,7 @@ while true; do
                     echo -e "${BLUE}$release_notes${RESET}"
                 fi
             fi
+            sleep 2;
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
         *)
