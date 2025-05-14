@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.0.0"
+VERSION="2.2.0"
 
 # Color codes
 RED="\e[31m"
@@ -73,10 +73,15 @@ show_info() {
     echo ""
     read -n1 -s -r -p "Press any key to return to the menu..."
 }
+skip_clear=false
 
 while true; do
     #set -x  # Enable trace mode
-    clear
+    if [ "$skip_clear" = false ]; then
+        clear
+    else
+        skip_clear=false  # Reset after skipping once
+    fi
 
     echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
     echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v${VERSION} (Linux) ==== ${RESET}"
@@ -248,14 +253,39 @@ while true; do
             ;;
         7)
             echo -e "${BOLD}${YELLOW}Checking for updates...${RESET}"
-            # if curl -s https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/version.txt | grep -q "$(curl -s https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/version.txt)"; then
-            #     echo -e "${GREEN}You are using the latest version of the script.${RESET}"
-            # else
-            #     echo -e "${RED}There is a new version available.${RESET}"
-            #     echo -e "${YELLOW}Please update the script by running the following command in your terminal:${RESET}"
-            #     echo -e "${YELLOW}cd ~/s23-vulkan-support && git pull${RESET}"
-            #     echo -e "${YELLOW}Then, run the script again.${RESET}"
-            # fi
+            # Get latest release info using GitHub API
+            api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
+
+            # Extract the tag_name (version) from the JSON response
+            latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
+
+            # Remove the 'v' prefix if present for comparison
+            latest_version_clean=$(echo "$latest_version" | sed 's/^v//')
+            current_version_clean=$(echo "$VERSION")
+
+            if [ -z "$latest_version" ]; then
+                echo -e "${RED}Failed to check for updates. Please check your internet connection.${RESET}"
+            elif [ "$current_version_clean" = "$latest_version_clean" ]; then
+                echo -e "${GREEN}You are using the latest version (v${VERSION}).${RESET}"
+            else
+                skip_clear=true
+                echo -e "${RED}A new version (${latest_version}) is available. You are using v${VERSION}.${RESET}"
+                echo -e "${YELLOW}If you want to update, please exit this running program and run these commands:${RESET}"
+                echo -e "${YELLOW}Commands:${RESET}"
+                echo -e "${GREEN}wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip${RESET}"
+                echo -e "${GREEN}cd .. && cd .. && rm -rf $VERSION${RESET}"
+                echo -e "${GREEN}unzip ${latest_version}.zip && cd $latest_version && cd s23-vulkan-support-${latest_version}${RESET}"
+                echo -e "${GREEN}chmod +x opengl-to-vulkan.sh${RESET}"
+                echo -e "${YELLOW}Then run the script:${RESET}"
+                echo -e "${GREEN}./opengl-to-vulkan.sh${RESET}"
+
+                # Display release notes if available
+                release_notes=$(echo "$api_response" | grep -o '"body": *"[^"]*"' | cut -d'"' -f4 | sed 's/\\r\\n/\n/g')
+                if [ ! -z "$release_notes" ]; then
+                    echo -e "${YELLOW}Release notes:${RESET}"
+                    echo -e "${BLUE}$release_notes${RESET}"
+                fi
+            fi
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
         *)
