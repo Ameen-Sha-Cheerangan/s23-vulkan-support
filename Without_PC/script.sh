@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.3"
+VERSION="2.3.4"
 
 # Color codes
 RED="\e[31m"
@@ -240,7 +240,7 @@ while true; do
                 echo -e "${GREEN}You are using the latest version (v${VERSION}).${RESET}"
             else
                 skip_clear=true
-                echo -e "${RED}A new version (${latest_version}) is available. You are using v${VERSION}.${RESET}"
+                echo -e "${RED}A new version v${latest_version} is available. You are using v${VERSION}.${RESET}"
                 echo -e "${YELLOW}If you want to update, please exit this running program and run these commands:${RESET}"
                 echo -e "${YELLOW}Commands:${RESET}"
                 echo -e "${GREEN}cd ~${RESET}"
