@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.4"
+VERSION="2.3.5"
 
 # Color codes
 RED="\e[31m"
@@ -97,7 +97,16 @@ while true; do
 
             if [[ $aggressive_choice == "1" ]]; then
                 rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b" > /dev/null 2>&1
-                echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced!${RESET}"
+                > "app_to_restart.txt"
+                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                cmds=''
+                while read pkg; do
+                    cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
+                done < app_to_restart.txt
+                echo "Waiting for widget providers to restart..."
+                rish -c "$cmds"
+                echo "${GREEN}Done!${RESET}"
             else
                 > "all_packages.txt"
                 > "app_to_restart.txt"
