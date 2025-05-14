@@ -116,12 +116,16 @@ while true; do
                     read -n1 -s -r -p "Press any key to return to the menu..."
                     continue
                 fi
+                > "app_to_restart.txt"
                 adb shell am crash com.android.systemui > /dev/null 2>&1
                 adb shell am force-stop com.android.settings > /dev/null 2>&1
                 adb shell am force-stop com.sec.android.app.launcher > /dev/null 2>&1
                 adb shell am force-stop com.samsung.android.app.aodservice > /dev/null 2>&1
                 adb shell am crash com.google.android.inputmethod.latin b > /dev/null 2>&1
-                echo -e "${GREEN}✅ Vulkan forced! Key system apps have been restarted.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced!${RESET}"
+                echo "Waiting for widget providers to restart..."
+                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
             else
                 > "all_packages.txt"
                 > "app_to_restart.txt"
@@ -152,15 +156,10 @@ while true; do
 
                 grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking
 
-                # total=$(wc -l < all_packages.txt)
-                # count=0
-
                 cmds=''
                 while read pkg; do
                     count=$((count + 1))
                     cmds+="am force-stop $pkg; "
-                    # echo "$count : $pkg"
-                    # cmds+="echo -n \"\rProgress: $count/$total packages stopped - $pkg\"; "
                 done < filtered_packages.txt
 
                 adb shell "$cmds"
