@@ -106,7 +106,7 @@ while true; do
                 done < app_to_restart.txt
                 echo "Waiting for widget providers to restart..."
                 rish -c "$cmds"
-                echo "${GREEN}Done!${RESET}"
+                echo -e "${GREEN}Done!${RESET}"
             else
                 > "all_packages.txt"
                 > "app_to_restart.txt"
