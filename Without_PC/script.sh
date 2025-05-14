@@ -99,7 +99,7 @@ while true; do
                 rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b" > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
                 > "app_to_restart.txt"
-                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
                 cmds=''
                 while read pkg; do
                     cmds+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
