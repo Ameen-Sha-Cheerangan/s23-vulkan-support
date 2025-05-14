@@ -123,9 +123,6 @@ while true; do
                 adb shell am force-stop com.samsung.android.app.aodservice > /dev/null 2>&1
                 adb shell am crash com.google.android.inputmethod.latin b > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
-                echo "Waiting for widget providers to restart..."
-                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
-                adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
             else
                 > "all_packages.txt"
                 > "app_to_restart.txt"
