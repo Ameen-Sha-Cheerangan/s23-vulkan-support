@@ -35,8 +35,8 @@ When you select "Switch to Vulkan", you will be prompted to choose how aggressiv
 
 - Linux PC
 - [ADB](https://developer.android.com/tools/adb) installed (usually pre-installed on most Linux distros)
-      Ubuntu - (`sudo apt-get update && sudo apt-get install android-sdk-platform-tools gawk grep coreutils`)
-      Fedora/RHEL/CentOS - (`sudo dnf install android-tools gawk grep coreutils`)
+      Ubuntu - (`sudo apt-get update && sudo apt-get install android-sdk-platform-tools gawk grep coreutils unzip`)
+      Fedora/RHEL/CentOS - (`sudo dnf install android-tools gawk grep coreutils unzip`)
 - Samsung Galaxy S23/S23+/S23U
 - USB Debugging enabled on your phone (`Settings > Developer Options > USB Debugging`)
 - A suitable USB cable for connection
