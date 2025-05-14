@@ -62,7 +62,7 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
    - This sets up the `rish` command for privileged operations in Termux.
 8. **Install git**
    - ```
-     cd ~ && apt update && apt upgrade && apt install git
+     cd ~ && apt update && apt upgrade && apt install git wget
      ```
 ---
 
