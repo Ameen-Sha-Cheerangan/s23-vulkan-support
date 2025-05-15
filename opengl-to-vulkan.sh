@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.4.1"
+VERSION="2.4.2"
 
 # Color codes
 RED="\e[31m"
@@ -52,10 +52,7 @@ check_device() {
     echo -e "${RED}❌ No device detected. Please connect your device and enable USB debugging.${RESET}"
         read -n1 -s -r -p "Press any key to return to the menu..."
         return 1
-    fi
-    return 0
-}
-
+    fiecho -e "${YELLOW}⚠️  All previously running apps and widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
 show_info() {
     clear
     echo -e "${BOLD}${BLUE}==== Info & Help ==== ${RESET}"
@@ -128,6 +125,12 @@ while true; do
                 adb shell am force-stop com.samsung.android.app.aodservice > /dev/null 2>&1
                 adb shell am crash com.google.android.inputmethod.latin b > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced! Apps have been force stopped.${RESET}"
+                adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                adb shell dumpsys appwidget | awk '/^Hosts:/{flag=1; next} /^Grants:/{flag=0} flag' | grep 'hostId=HostId' | grep -oP 'pkg:\K[^}]+' >> app_to_restart.txt # Getting all widget hosts
+                adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
+                echo -e "${YELLOW}⚠️  All previously running apps and widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
+
             elif [[ $aggressive_choice == "2" ]]; then
                 > "all_packages.txt"
                 > "app_to_restart.txt"
@@ -169,6 +172,7 @@ while true; do
 
                 echo -e "${GREEN}✅ Vulkan forced! Apps have been force stopped.${RESET}"
                 adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
+                adb shell dumpsys appwidget | awk '/^Hosts:/{flag=1; next} /^Grants:/{flag=0} flag' | grep 'hostId=HostId' | grep -oP 'pkg:\K[^}]+' >> app_to_restart.txt # Getting all widget hosts
 
                 sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
 
@@ -178,7 +182,7 @@ while true; do
 
                 adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
 
-                echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
+                echo -e "${YELLOW}⚠️  All previously running apps, widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
             else
                 echo -e "${RED}Invalid choice${RESET}"
                 break
