@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.4.0"
+VERSION="2.4.1"
 
 # Color codes
 RED="\e[31m"
@@ -102,7 +102,7 @@ while true; do
             if [[ $aggressive_choice == "1" ]]; then
                 rish -c "setprop debug.hwui.renderer skiavk; am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher; am force-stop com.samsung.android.app.aodservice; am crash com.google.android.inputmethod.latin b" > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
-            else
+            elif [[ $aggressive_choice == "2" ]]; then
                 > "all_packages.txt"
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
@@ -159,6 +159,8 @@ while true; do
 
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
+            else
+                echo -e "${RED}Invalid choice${RESET}"
             fi
             #To preserve auto rotation
             attempts=0
