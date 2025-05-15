@@ -12,8 +12,7 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Forces Vulkan rendering via ADB
 - Offers two modes for applying Vulkan:
       Normal mode: Only restarts key system apps (recommended for most users; avoids most issues)
-      Aggressive mode: Stops all apps and relaunches previously running apps and widgets (may cause side effects; see Known Issues)
-- Optionally: Launch all apps (not at all recommended; see warnings)
+      Aggressive mode:(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure; May cause minor side-effects(See known issues)) 
 - Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
 - Clear instructions and user prompts
 
@@ -21,12 +20,12 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 ## Vulkan Modes
 When you select "Switch to Vulkan", you will be prompted to choose how aggressive the script should be when stopping apps:
 
-- Normal Mode (Recommended):
+- Normal Mode :
       Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard).
       This mode avoids the issues listed below and is suitable for nearly all users.
 
-- Aggressive Mode (Read the issues(section : System-Wide App Restart Issues), I didn't face it because I don't use them, so I use Aggressive mode):
-      Force-stops all apps and relaunches previously running apps and widgets.
+- Aggressive Mode (Read the issues(section : System-Wide App Restart Issues)):
+      force-stops most of the apps and relaunches previously running apps and widgets.
       This mode may cause the side effects described in Known Issues.      
       Recommended only if you need Vulkan applied to every app immediately.
 
@@ -72,41 +71,35 @@ This tool is community-driven and experimental. Below are known issues reported 
   Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
 
 - **App Compatibility**  
-  Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There is no workaround—Samsung must adopt Vulkan across models, and developers must support it fully.
+  Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There has been some methods shared in reddit community like below(3rd option when you run the script)
+  - Game Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
 
 ### 🔸 System-Wide App Restart Issues
 
-- **Default App Resets**  
-  After a system-wide app stop, default apps such as your browser or keyboard may be reset to Samsung defaults.
-
-- **Loss of WiFi Calling / VoLTE**  
-  Some users reported losing WiFi-Calling or VoLTE after restarting all apps.  
-  **Fix**: Go to **Settings > Connections > SIM manager**, then toggle SIM 1/2 **off and back on**.  
-  *Credit: Reddit users [Fun-Flight4427](https://www.reddit.com/user/Fun-Flight4427) and [ActualMountain7899](https://www.reddit.com/user/ActualMountain7899)*
+- **Reset of Live Wallpaper**
 
 - **Aggressiveness Profile Note**  
   Using the "Aggressive" profile when stopping apps increases the chance of the above issues.  
   For fewer side effects, use the "Normal" profile when prompted by the script.
 
+  
+
 ### 🔸 Additional Notes
 
-- These issues are **not bugs in the script** itself but rather limitations of system behavior when Vulkan is forced and apps are restarted.
 - All changes made by the script are **temporary** and will **reset on device reboot**.
 ---
 
 ## Uninstall / Switch Back to OpenGL
 
-To revert your device back to OpenGL rendering, **simply restart your phone**.  
-No files or settings need to be removed-rebooting the device will reset the GPU renderer to its default (OpenGL).
+- To revert your device back to OpenGL rendering, **simply restart your phone**.  
+- No files or settings need to be removed-rebooting the device will reset the GPU renderer to its default (OpenGL).
 
 
 ---
 
 ## Warnings
 
-- **All changes are temporary!** Vulkan rendering will reset after a device reboot.
-- **Launching all apps is NOT recommended!**  
-- If you do **not** relaunch all apps, some notifications from important apps may be delayed until you open them manually.
+- **All changes are temporary!** Vulkan rendering will reset after a device reboot.(auto-optimisation restart won't remove the changes though)
 - The blacklist feature is based on a Reddit user's recommendation and may not work for everyone.
 
 
