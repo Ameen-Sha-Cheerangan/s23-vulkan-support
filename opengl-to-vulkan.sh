@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.3.6"
+VERSION="2.3.5"
 
 # Color codes
 RED="\e[31m"
@@ -104,7 +104,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive ${YELLOW}${RESET} (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
+            echo -e "${GREEN}2) Aggressive${RESET}(force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) "
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
