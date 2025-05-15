@@ -11,8 +11,8 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Easy menu-driven interface with safety warnings and notices
 - Forces Vulkan rendering via ADB
 - Offers two modes for applying Vulkan:
-      Normal mode: Only restarts key system apps (recommended for most users; avoids most issues)
-      Aggressive mode:(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure; May cause minor side-effects(See known issues)) 
+      Normal mode:  Only restarts key system apps (recommended for most users; avoids most issues)
+      Aggressive mode:  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; May cause minor side-effects(See known issues)) 
 - Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
 - Clear instructions and user prompts
 
@@ -43,26 +43,26 @@ When you select "Switch to Vulkan", you will be prompted to choose how aggressiv
 ---
 
 ## Installation / How to switch to Vulkan
-Clone the repository (do this once):
-`git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git`
 
-`cd s23-vulkan-support`
-
-`chmod +x opengl-to-vulkan.sh`
-
-**Running (repeat after every device restart(not needed after auto-optimization restart)):**
-
-`./opengl-to-vulkan.sh`
-
+Paste this in the terminal. This is will install the latest release and run the script
+```
+api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
+latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
+latest_version_clean=$(echo "$latest_version" | sed 's/^v//')
+wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip
+unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-$latest_version
+chmod +x opengl-to-vulkan.sh
+./opengl-to-vulkan.sh
+```
 Follow the on-screen menu instructions.
+
+`./opengl-to-vulkan.sh` can be used to execute the script after restart(auto-optimisation restart doesn't need reapplying, as it won't revert to OpenGL). But I recommend the whole commands in the above block to be pasted in terminal as it will download the latest release and run the script in that.
 
 ---
 
 
 
 ## ⚠️ Known Issues
-
-This tool is community-driven and experimental. Below are known issues reported by users or observed during testing. This list may expand as more feedback is received.
 
 
 ### 🔸 Vulkan Rendering Issues
@@ -78,15 +78,10 @@ This tool is community-driven and experimental. Below are known issues reported 
 
 - **Reset of Live Wallpaper**
 
-- **Aggressiveness Profile Note**  
-  Using the "Aggressive" profile when stopping apps increases the chance of the above issues.  
-  For fewer side effects, use the "Normal" profile when prompted by the script.
-
-  
-
 ### 🔸 Additional Notes
 
 - All changes made by the script are **temporary** and will **reset on device reboot**.
+  
 ---
 
 ## Uninstall / Switch Back to OpenGL
@@ -136,7 +131,7 @@ To verify that Vulkan rendering is enabled:
 2. **Enable GPUWatch.**
 3. **Open any app** (for example, the Dialer).
 4. GPUWatch will display an overlay-look for the renderer information.
-   - If Vulkan is active, it will show something like: **Vulkan Renderer (skiavk)**
+   - If Vulkan is active, it will show something like: **Vulkan**
 
 This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23+/S23U device.
 
@@ -147,9 +142,6 @@ This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23
 
 Vulkan is a modern graphics API that offers more efficient, low-overhead access to your device’s GPU compared to OpenGL. Switching to Vulkan can improve performance, reduce device heat, and extend battery life as reported by reddit users in S23 Ultra reddit community.
 
-### Why is there a "Launch All Apps" option?
-
-This option is included because it is a common practice in other Vulkan-enabling scripts for Samsung devices. In practice, you rarely need to launch all apps after forcing Vulkan. Most users will not benefit from this step, and it may cause unnecessary battery drain or device warmth. It is included for completeness and for advanced troubleshooting only.
 
 ### I see error related to "user 150" in the output. Is this a problem?
 
@@ -162,8 +154,8 @@ If you find any issues or have suggestions, please [open an issue](https://githu
 
 If you found this tool helpful, please consider giving it a ⭐ on [GitHub](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support)!
 
-
 ---
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
