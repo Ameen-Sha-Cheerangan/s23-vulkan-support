@@ -4,6 +4,8 @@ A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy 
 
 Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kbisga/full_tutorial_enable_vulkan_on_s23u_without_pc/)
 
+All other limitation and FAQ listed in the main README.md file is also applicable to this, not listing due to time constraints
+
 ---
 
 ## ⚠️ Disclaimer
@@ -60,36 +62,55 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
      . .bashrc
      ```
    - This sets up the `rish` command for privileged operations in Termux.
-8. **Install git**
+8. **Install dependencies**
    - ```
-     cd ~ && apt update && apt upgrade && apt install git wget
+     cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk
      ```
 ---
 
-## Clone the repo and run the script
+9. Clone the repo and run the script(to take the latest release)
 
-   ```
-  cd ~ && rm -rf s23-vulkan-support
-  git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git
-  cd s23-vulkan-support/Without_PC
-  chmod +x script.sh
-  ./script.sh
-   ```
-Follow the instructions.
+```
+api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
+latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
+latest_version_clean=$(echo "$latest_version" | sed 's/^v//')
+cd ~
+rm -rf s23-vulkan-*
+wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip
+unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-$latest_version && cd Without_PC
+chmod +x script.sh
+./script.sh
+```
 
-After normal restart(not the auto-optimization one), you have to apply the script again.
-You can just run (Obviously after connecting to shizuku)
+10. Follow the instructions.
+
+---
+## Do this everytime once it gets restart(or a NORMAL REBOOT)
+
+- After normal restart(not the auto-optimization one), you have to apply the script again.
+
+1. Start the Shizuku
+2. You can just run.
+
 ```
- cd s23-vulkan-support/Without_PC && ./script.sh
+ cd ~/s23-vulkan-support*/Without_PC && ./script.sh
 ```
-But I would running this block everytime(You will have internet connection I believe all the time)
+
+**But I would recommend running this block everytime**(You will get the latest release everytime; I might have made some improvements or fixed some issues)
+
 ```
-  cd ~ && rm -rf s23-vulkan-support
-  git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git
-  cd s23-vulkan-support/Without_PC
-  chmod +x script.sh
-  ./script.sh
+api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
+latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
+latest_version_clean=$(echo "$latest_version" | sed 's/^v//')
+cd ~
+rm -rf s23-vulkan-*
+wget https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip
+unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-$latest_version && cd Without_PC
+chmod +x script.sh
+./script.sh
 ```
 By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
+
+---
 
 
