@@ -19,7 +19,8 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Forces Vulkan rendering via ADB
 - Offers two modes for applying Vulkan:
       Normal mode:  Only restarts key system apps (recommended for most users; avoids most issues)
-      Aggressive mode:  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; May cause minor side-effects(See known issues)) 
+      Aggressive mode:  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets;)
+                        I have fixed most of the bugs known except, gallery frame not loading. 
 - Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
 - Clear instructions and user prompts
 
@@ -67,27 +68,15 @@ Follow the on-screen menu instructions.
 
 ---
 
+## 🔸 Additional Notes
 
-
-## ⚠️ Known Issues
-
-
-### 🔸 Vulkan Rendering Issues
-
+- All changes made by the script are **temporary** and will **reset on device reboot**.
 - **Visual Artifacts**  
   Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
 
 - **App Compatibility**  
   Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There has been some methods shared in reddit community like below(3rd option when you run the script)
   - Game Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
-
-### 🔸 System-Wide App Restart Issues
-
-- **Reset of Live Wallpaper**
-
-### 🔸 Additional Notes
-
-- All changes made by the script are **temporary** and will **reset on device reboot**.
   
 ---
 
