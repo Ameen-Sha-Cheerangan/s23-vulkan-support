@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.3.5"
+VERSION="2.3.7"
 
 # Color codes
 RED="\e[31m"
@@ -104,7 +104,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive${RESET}(force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) "
+            echo -e "${GREEN}2) Aggressive${RESET}(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -153,18 +153,16 @@ while true; do
 
                 grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
 
+                echo "Stopping apps ...please wait"
                 cmds=''
                 while read pkg; do
-                    count=$((count + 1))
                     cmds+="am force-stop $pkg; "
                 done < filtered_packages.txt
 
                 adb shell "$cmds"
                 echo ""
 
-
-
-                echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced! Apps have been force stopped.${RESET}"
                 adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
 
                 sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
@@ -177,8 +175,38 @@ while true; do
 
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
+            #To preserve auto rotation
+            attempts=0
             adb shell settings put system accelerometer_rotation $auto_rotation
+            restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+            while [[ "$auto_rotation" != "$restored_auto_rotation" ]]; do
+                echo "Auto rotation not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                adb shell settings put system accelerometer_rotation $auto_rotation
+                restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation."
+                    break
+                fi
+            done
+            #To preserve accessibility settings
+            attempts=0
             adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
+            RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+            while [[ "$CURRENT_ACCESSIBILITY" != "$RESTORED_ACCESSIBILITY" ]]; do
+                echo "Accessibility settings not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
+                RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings."
+                    break
+                fi
+            done
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
