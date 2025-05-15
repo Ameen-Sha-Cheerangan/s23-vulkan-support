@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.3.5"
+VERSION="2.3.6"
 
 # Color codes
 RED="\e[31m"
@@ -104,7 +104,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive ${YELLOW}[Recommended]${RESET} (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
+            echo -e "${GREEN}2) Aggressive ${YELLOW}${RESET} (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -151,7 +151,7 @@ while true; do
                     continue
                 fi
 
-                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking
+                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
 
                 cmds=''
                 while read pkg; do
