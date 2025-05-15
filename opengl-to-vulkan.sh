@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.4.0"
+VERSION="2.4.1"
 
 # Color codes
 RED="\e[31m"
@@ -128,7 +128,7 @@ while true; do
                 adb shell am force-stop com.samsung.android.app.aodservice > /dev/null 2>&1
                 adb shell am crash com.google.android.inputmethod.latin b > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
-            else
+            elif [[ $aggressive_choice == "2" ]]; then
                 > "all_packages.txt"
                 > "app_to_restart.txt"
                 > "temp_packages.txt"
@@ -179,6 +179,9 @@ while true; do
                 adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
 
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
+            else
+                echo -e "${RED}Invalid choice${RESET}"
+                break
             fi
             #To preserve auto rotation
             attempts=0
