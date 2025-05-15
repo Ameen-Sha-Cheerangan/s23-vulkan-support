@@ -5,7 +5,23 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 **All changes are temporary and revert on device reboot.(not the auto-optimization restart)**
 
 ---
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Vulkan Modes](#vulkan-modes)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Additional Notes](#-additional-notes)
+- [Uninstall](#uninstall--switch-back-to-opengl)
+- [Warnings](#warnings)
+- [Disclaimer](#standard-disclaimer-just-in-case)
+- [Credits](#credits)
+- [How to Check if Vulkan is Active](#how-to-check-if-vulkan-is-active)
+- [FAQ](#faq)
+- [Issues](#issues)
+- [License](#license)
 
+---
 
 ## Overview
 
@@ -18,26 +34,28 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Easy menu-driven interface with safety warnings and notices
 - Forces Vulkan rendering via ADB
 - Offers two modes for applying Vulkan:
-      Normal mode:  Only restarts key system apps (recommended for most users; avoids most issues)
-      Aggressive mode:  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets;)
+   - **Normal mode** :  Only restarts key system apps (recommended for most users; avoids most issues)
+   - **Aggressive mode** :  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets;)
                         I have fixed most of the bugs known except, gallery frame not loading. 
-- Blacklist apps from Game Driver (based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/))
+- Blacklist apps from Game Driver to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/)), based on his recommend
 - Clear instructions and user prompts
 
 ---
 ## Vulkan Modes
-When you select "Switch to Vulkan", you will be prompted to choose how aggressive the script should be when stopping apps:
 
-- Normal Mode :
-      Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard).
-      This mode avoids the issues listed below and is suitable for nearly all users.
+### Basic Mode
+- Only restarts key system apps (SystemUI, Settings, Launcher, AOD, Keyboard)
+- Quick (completes in seconds)
+- Suitable for users who want a fast application of Vulkan
 
-- Aggressive Mode (Read the issues(section : System-Wide App Restart Issues)):
-      force-stops most of the apps and relaunches previously running apps and widgets.
-      This mode may cause the side effects described in Known Issues.      
-      Recommended only if you need Vulkan applied to every app immediately.
-
+### Complete Mode
+- Force-stops most apps and intelligently relaunches previously running apps and widgets
+- More thorough application of Vulkan across the entire system
+- Takes slightly longer to complete (1-2 minutes)
+- Recommended for users who want the most comprehensive Vulkan implementation
+- All previously reported bugs have been fixed in this version
 ---
+
 ## Requirements
 
 - Linux PC
@@ -97,18 +115,7 @@ Follow the on-screen menu instructions.
 ---
 ## Standard Disclaimer (Just in Case!)
 
-This script is provided for your convenience.  
-I've tested it extensively on my own device and haven't seen any issues,  
-but just to be safe (for both of us!), I'm including this notice:
-
-- It makes changes to system settings. Please use responsibly.
-- If you have any concerns, consider backing up your data first.
-- Please do not use this tool for any harmful or inappropriate purposes.
-- By using this tool, you accept responsibility for your actions.
-
-While issues are very unlikely, always proceed with care.  
-The author is not responsible for any unexpected issues, data loss, or device instability that may arise from use of this tool.  
-This is not an official Samsung or Google product.
+This script is provided "as is" without warranties. While extensively tested and issues are very unlikely, it modifies system settings and may cause unexpected behavior. The author is not responsible for any issues that may arise. Always back up your data before proceeding. This is not an official Samsung or Google product.
 
 ---
 
