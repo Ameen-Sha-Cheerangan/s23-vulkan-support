@@ -1,2 +1,1 @@
-rk.android.app.pixelsearch
-vendor.qti.data.txpwradmin
+
