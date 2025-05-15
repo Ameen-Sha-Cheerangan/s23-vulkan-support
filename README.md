@@ -10,11 +10,11 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - [Features](#features)
 - [Vulkan Modes](#vulkan-modes)
 - [Requirements](#requirements)
-- [Installation](#installation)
+- [Installation / How to switch to Vulkan](#installation--how-to-switch-to-vulkan)
 - [Additional Notes](#additional-notes)
 - [Uninstall / Switch Back to OpenGL](#uninstall--switch-back-to-opengl)
 - [Warnings](#warnings)
-- [Disclaimer](#standard-disclaimer-just-in-case)
+- [Standard Disclaimer](#standard-disclaimer-just-in-case)
 - [Credits](#credits)
 - [How to Check if Vulkan is Active](#how-to-check-if-vulkan-is-active)
 - [FAQ](#faq)
@@ -86,16 +86,19 @@ Follow the on-screen menu instructions.
 
 ---
 
-## 🔸 Additional Notes
+## Additional Notes
 
 - All changes made by the script are **temporary** and will **reset on device reboot**.
-- **Visual Artifacts**  
-  Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
-
+- **Visual Artifacts** : Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
 - **App Compatibility**  
   Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There has been some methods shared in reddit community like below(3rd option when you run the script)
-  - Game Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
-  
+     - Game Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit.
+- **Blacklist Management**
+     - Add apps to blacklist by editing blacklist.txt (one package name per line)
+     - Remove apps from blacklist by editing blacklist.txt and re-running the blacklist option.
+- **Samsung auto optimisation restarts wont reset Vulkan rendering** - only a normal device reboot will revert to OpenGL
+- If you experience any issues after enabling Vulkan, simply reboot your device to return to OpenGL rendering.
+
 ---
 
 ## Uninstall / Switch Back to OpenGL
