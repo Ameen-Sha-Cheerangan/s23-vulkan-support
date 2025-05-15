@@ -129,7 +129,7 @@ while true; do
                 adb shell dumpsys appwidget | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt # Getting all widget providers
                 adb shell dumpsys appwidget | awk '/^Hosts:/{flag=1; next} /^Grants:/{flag=0} flag' | grep 'hostId=HostId' | grep -oP 'pkg:\K[^}]+' >> app_to_restart.txt # Getting all widget hosts
                 adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
-                echo -e "${YELLOW}⚠️  All previously running apps and widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
+                echo -e "${YELLOW}⚠️ Widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
 
             elif [[ $aggressive_choice == "2" ]]; then
                 > "all_packages.txt"
