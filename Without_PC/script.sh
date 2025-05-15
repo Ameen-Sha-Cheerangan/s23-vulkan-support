@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.6"
+VERSION="2.3.7"
 
 # Color codes
 RED="\e[31m"
@@ -91,7 +91,7 @@ while true; do
         1)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive ${RESET}(force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) "
+            echo -e "${GREEN}2) Aggressive ${RESET}((force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -131,7 +131,7 @@ while true; do
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l < all_packages.txt)
                 echo "$total packages found."
-                echo -e "${BLUE}Stopping all apps...Please wait...${RESET}"
+                echo -e "${BLUE}Stopping Apps...Please wait...${RESET}"
 
                 cmds="setprop debug.hwui.renderer skiavk;"
                 while read pkg; do
@@ -140,7 +140,7 @@ while true; do
 
                 rish -c "$cmds"
                 echo
-                echo -e "${GREEN}✅ Vulkan forced! All apps have been stopped.${RESET}"
+                echo -e "${GREEN}✅ Vulkan forced! Apps have been stopped.${RESET}"
 
                 rish -c "dumpsys appwidget" | awk '/^Widgets:/{flag=1; next} /^Hosts:/{flag=0} flag' | grep "provider=" | grep -oP 'ComponentInfo\{\K[^/]+' >> app_to_restart.txt
                 sort -u app_to_restart.txt -o app_to_restart.txt # Removing duplicates
