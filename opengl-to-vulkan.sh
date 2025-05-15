@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.3.7"
+VERSION="2.3.8"
 
 # Color codes
 RED="\e[31m"
@@ -187,7 +187,7 @@ while true; do
                 restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
                 attempts=$((attempts + 1))
                 if [[ $attempts -gt 5 ]]; then
-                    echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation."
+                    echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation. Just enable or disable it according to your need from quick settings panel"
                     break
                 fi
             done
@@ -203,7 +203,7 @@ while true; do
                 RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
                 attempts=$((attempts + 1))
                 if [[ $attempts -gt 5 ]]; then
-                    echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings."
+                    echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings. Settings > Accessibility > Installed Apps > Enable or disable apps permission according to your need"
                     break
                 fi
             done
