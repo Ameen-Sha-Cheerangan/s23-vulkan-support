@@ -66,6 +66,8 @@ All other limitation and FAQ listed in the main README.md file is also applicabl
    - ```
      cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk
      ```
+
+
 ---
 
 9. Clone the repo and run the script(to take the latest release)
@@ -89,7 +91,7 @@ chmod +x script.sh
 
 - After normal restart(not the auto-optimization one), you have to apply the script again.
 
-1. Start the Shizuku
+1. Start the Shizuku ( There is a macrodroid shortcut for automatically starting shizuku on reboot, I am not the creator, but if you want you can use it. )
 2. You can just run.
 ```
 api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
