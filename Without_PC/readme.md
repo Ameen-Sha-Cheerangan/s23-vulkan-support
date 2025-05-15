@@ -91,13 +91,6 @@ chmod +x script.sh
 
 1. Start the Shizuku
 2. You can just run.
-
-```
- cd ~/s23-vulkan-support*/Without_PC && ./script.sh
-```
-
-**But I would recommend running this block everytime**(You will get the latest release everytime; I might have made some improvements or fixed some issues)
-
 ```
 api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
 latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
@@ -110,6 +103,12 @@ chmod +x script.sh
 ./script.sh
 ```
 By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
+
+
+If you don't want the updated code(or you don't have the internet connnection, you can run this instead
+```
+ cd ~/s23-vulkan-support*/Without_PC && ./script.sh
+```
 
 ---
 
