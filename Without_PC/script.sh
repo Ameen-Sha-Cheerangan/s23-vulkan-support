@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.3.5"
+VERSION="2.3.6"
 
 # Color codes
 RED="\e[31m"
@@ -91,7 +91,7 @@ while true; do
         1)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive ${YELLOW}[Recommended]${RESET} (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
+            echo -e "${GREEN}2) Aggressive (force-stop ALL apps and Relaunch Previously Running Apps and Widgets; More complete procedure) ${RESET}"
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
