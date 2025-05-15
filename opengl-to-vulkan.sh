@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.4.2"
+VERSION="2.4.3"
 
 # Color codes
 RED="\e[31m"
@@ -52,7 +52,11 @@ check_device() {
     echo -e "${RED}❌ No device detected. Please connect your device and enable USB debugging.${RESET}"
         read -n1 -s -r -p "Press any key to return to the menu..."
         return 1
-    fiecho -e "${YELLOW}⚠️  All previously running apps and widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
+    fi
+    return 0
+}
+
+
 show_info() {
     clear
     echo -e "${BOLD}${BLUE}==== Info & Help ==== ${RESET}"
@@ -105,8 +109,8 @@ while true; do
             echo ""
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
-            echo -e "${GREEN}1) Normal${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Aggressive${RESET}(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
+            echo -e "${GREEN}1) Basic${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
+            echo -e "${GREEN}2) Complete${RESET}(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -119,9 +123,7 @@ while true; do
                     continue
                 fi
                 > "app_to_restart.txt"
-                adb shell am crash com.android.systemui > /dev/null 2>&1
-                adb shell am force-stop com.android.settings > /dev/null 2>&1
-                adb shell am force-stop com.sec.android.app.launcher > /dev/null 2>&1
+                adb shell "am crash com.android.systemui; am force-stop com.android.settings; am force-stop com.sec.android.app.launcher" > /dev/null 2>&1
                 adb shell am force-stop com.samsung.android.app.aodservice > /dev/null 2>&1
                 adb shell am crash com.google.android.inputmethod.latin b > /dev/null 2>&1
                 echo -e "${GREEN}✅ Vulkan forced!${RESET}"
@@ -130,7 +132,6 @@ while true; do
                 adb shell dumpsys appwidget | awk '/^Hosts:/{flag=1; next} /^Grants:/{flag=0} flag' | grep 'hostId=HostId' | grep -oP 'pkg:\K[^}]+' >> app_to_restart.txt # Getting all widget hosts
                 adb shell "while read pkg; do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done" < app_to_restart.txt
                 echo -e "${YELLOW}⚠️ Widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
-
             elif [[ $aggressive_choice == "2" ]]; then
                 > "all_packages.txt"
                 > "app_to_restart.txt"
