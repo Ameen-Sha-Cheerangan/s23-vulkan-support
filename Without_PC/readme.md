@@ -105,7 +105,7 @@ chmod +x script.sh
 By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
 
 
-If you don't want the updated code(or you don't have the internet connnection, you can run this instead
+If you don't want the updated code(or you don't have the internet connnection), you can run this instead
 ```
  cd ~/s23-vulkan-support*/Without_PC && ./script.sh
 ```
