@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.3.8"
+VERSION="2.4.0"
 
 # Color codes
 RED="\e[31m"
@@ -14,6 +14,11 @@ clear
 auto_rotation=$(adb shell settings get system accelerometer_rotation)
 #Get the current accessibility services
 CURRENT_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+#To prevent live wallpapers from resetting
+CURRENT_WALLPAPER=$(adb shell dumpsys wallpaper | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
+
 
 echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
 echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings via ADB.${RESET}"
@@ -151,7 +156,7 @@ while true; do
                     continue
                 fi
 
-                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
+                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
 
                 echo "Stopping apps ...please wait"
                 cmds=''
