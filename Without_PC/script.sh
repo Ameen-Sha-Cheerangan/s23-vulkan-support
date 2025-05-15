@@ -156,8 +156,38 @@ while true; do
                 echo ""
                 echo -e "${YELLOW}⚠️  All previously running apps and widget providers have been restarted. Some widgets may require just a tap.${RESET}"
             fi
+            #To preserve auto rotation
+            attempts=0
             rish -c "settings put system accelerometer_rotation $auto_rotation"
+            restored_auto_rotation=$(rish -c "settings get system accelerometer_rotation")
+            while [[ "$auto_rotation" != "$restored_auto_rotation" ]]; do
+                echo "Auto rotation not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                rish -c "settings put system accelerometer_rotation $auto_rotation"
+                restored_auto_rotation=$(rish -c "settings get system accelerometer_rotation")
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation. Just enable or disable it according to your need from quick settings panel"
+                    break
+                fi
+            done
+            #To preserve accessibility settings
+            attempts=0
             rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
+            RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+            while [[ "$CURRENT_ACCESSIBILITY" != "$RESTORED_ACCESSIBILITY" ]]; do
+                echo "Accessibility settings not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
+                RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings. Settings > Accessibility > Installed Apps > Enable or disable apps permission according to your need"
+                    break
+                fi
+            done
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -212,7 +242,7 @@ while true; do
             exit 0
             ;;
         6)
-            echo -e "${BOLD}${YELLOW}GPUWatch cannot be enabled via ADB.${RESET}"
+            echo -e "${BOLD}${YELLOW}GPUWatch cannot be enabled via terminal.${RESET}"
             echo ""
             echo -e "${GREEN}To enable GPUWatch, follow these steps on your device:${RESET}"
             echo "1. Go to Settings > Developer Options > GPU Watch"
