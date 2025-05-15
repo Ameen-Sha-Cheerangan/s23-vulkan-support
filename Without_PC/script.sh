@@ -16,6 +16,10 @@ auto_rotation=$(rish -c "settings get system accelerometer_rotation")
 
 # Get the current accessibility services
 CURRENT_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+#To prevent live wallpapers from resetting
+CURRENT_WALLPAPER=$(rish -c "dumpsys wallpaper" | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
 
 echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
 echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings .${RESET}"
@@ -126,7 +130,7 @@ while true; do
                 #     cmds+='count=$((count + 1)); '
                 #     cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
                 # done < all_packages.txt
-                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" all_packages.txt > filtered_packages.txt
+                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt
                 # to prevent wifi calling from breaking
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l < all_packages.txt)
