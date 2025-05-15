@@ -33,7 +33,7 @@ All other limitation and FAQ listed in the main README.md file is also applicabl
 
 ---
 
-## Tool Setup ( Just one time ; It is not that hard )
+## Tool Setup (This is initial setup; you just need to do it one time ; It is not that hard )
 
 1. **Install Shizuku**
    - Download from [Google Play](https://play.google.com/store/apps/details?id=moe.shizuku.privileged.api), [F-Droid](https://f-droid.org/packages/moe.shizuku.privileged.api/), or [GitHub](https://github.com/RikkaApps/Shizuku).
