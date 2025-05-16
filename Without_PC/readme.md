@@ -87,6 +87,7 @@ chmod +x script.sh
 
 10. Follow the instructions.
 
+11. After finishing all script running and all type `exit` in the termux or just swipe down to see the termux persistent notification in the notification panel and click exit over there.
 ---
 ## After Device Restart
 
