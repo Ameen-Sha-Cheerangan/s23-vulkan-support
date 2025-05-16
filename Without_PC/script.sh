@@ -128,6 +128,7 @@ while true; do
                 rish -c "$cmds"
                 echo -e "${YELLOW}⚠️ Widget providers and widget hosts have been restarted. Some widgets may require just a tap.${RESET}"
             elif [[ $aggressive_choice == "2" ]]; then
+                echo -e "${BLUE}Searching for packages and filtering...Please wait${RESET}"
                 > "all_packages.txt"
                 > "app_to_restart.txt"
                 > "force_stop_errors.log"
