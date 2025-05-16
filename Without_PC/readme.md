@@ -113,7 +113,7 @@ If you don't have internet access or want to use your existing installation:
 ---
 ## How to Use the Blacklist Feature
 
-The blacklist feature allows you to prevent specific apps from using the Game Driver, which can help fix crashes or compatibility issues with certain applications when Vulkan is enabled. Here's how to use it:
+The blacklist feature can help fix crashes or compatibility issues with certain applications when Vulkan is enabled. Here's how to use it:
 
 ### Creating and Editing the Blacklist File
 
@@ -125,7 +125,6 @@ The blacklist feature allows you to prevent specific apps from using the Game Dr
 2. **Add package names** to blacklist, one per line. For example:
    ```
    com.example.problematicapp
-   com.game.crashingapp
    com.social.unstableapp
    ```
 
