@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.4.3"
+VERSION="2.4.4"
 
 # Color codes
 RED="\e[31m"
@@ -56,6 +56,16 @@ check_device() {
     return 0
 }
 
+show_warning() {
+    clear
+    echo "⚠️  WARNING: Launching all apps may:"
+    echo "- Wake sleeping/background apps"
+    echo "- Increase battery consumption temporarily"
+    echo ""
+    echo "ℹ️  In rare cases if something might not load this might fix it. But I think you can directly launch it, that would be better"
+    echo ""
+}
+
 
 show_info() {
     clear
@@ -95,14 +105,14 @@ while true; do
     echo "2) Switch to OpenGL (Reboot Device)"
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
-    echo "5) Exit"
+    echo "5) Launch All Apps(Not Recommended)"
     echo "6) Turn GPUWatch On/Off"
     echo "7) Check for Updates"
-
+    echo "8) Exit"
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
     echo ""
-    read -p "Choose [1-7]: " choice
+    read -p "Choose [1-8]: " choice
 
     case $choice in
         1)
@@ -110,7 +120,7 @@ while true; do
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Basic${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
-            echo -e "${GREEN}2) Complete${RESET}(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
+            echo -e "${GREEN}2) Complete${RESET} (force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; ${YELLOW}More complete procedure${RESET}) "
             echo ""
             read -p "Choose [1-2]: " aggressive_choice
 
@@ -162,7 +172,7 @@ while true; do
 
                 grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
 
-                echo "Stopping apps ...please wait"
+                echo "Stopping apps..., Please wait"
                 cmds=''
                 while read pkg; do
                     cmds+="am force-stop $pkg; "
@@ -220,6 +230,12 @@ while true; do
                     break
                 fi
             done
+            echo "🔄 Enabling Samsung Edge Panel..."
+
+            adb shell settings put secure edge_enable 1
+            adb shell settings put secure edge_panels_enabled 1
+
+            echo "✅ Edge Panel enabled. Check screen to confirm."
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -271,12 +287,55 @@ while true; do
             show_info
             ;;
         5)
-            echo -e "${GREEN}Thank you for using the S23/S23+/S23U Vulkan Rendering Tool!${RESET}"
-            echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
-            echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
-            echo -e "For updates, visit the GitHub repo above."
-            exit 0
+            show_warning
+            read -p "Type 'YES' to continue: " confirm
+            if [[ $confirm == "YES" ]]; then
+                check_device || continue
+                adb shell "for pkg in \$(pm list packages | cut -f2 -d:); do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done"
+                echo "⚠️  All apps launched! Close unused apps from Recents immediately."
+            else
+                echo "❌ Launch canceled."
+            fi
+            #To preserve auto rotation
+            attempts=0
+            adb shell settings put system accelerometer_rotation $auto_rotation
+            restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+            while [[ "$auto_rotation" != "$restored_auto_rotation" ]]; do
+                echo "Auto rotation not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                adb shell settings put system accelerometer_rotation $auto_rotation
+                restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation. Just enable or disable it according to your need from quick settings panel"
+                    break
+                fi
+            done
+            #To preserve accessibility settings
+            attempts=0
+            adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
+            RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+            while [[ "$CURRENT_ACCESSIBILITY" != "$RESTORED_ACCESSIBILITY" ]]; do
+                echo "Accessibility settings not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
+                RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+                attempts=$((attempts + 1))
+                if [[ $attempts -gt 5 ]]; then
+                    echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings. Settings > Accessibility > Installed Apps > Enable or disable apps permission according to your need"
+                    break
+                fi
+            done
+            echo "🔄 Enabling Samsung Edge Panel..."
+
+            adb shell settings put secure edge_enable 1
+            adb shell settings put secure edge_panels_enabled 1
+
+            read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
+
         6)
             echo -e "${BOLD}${YELLOW}GPUWatch cannot be enabled via ADB.${RESET}"
             echo ""
@@ -324,6 +383,13 @@ while true; do
                 fi
             fi
             read -n1 -s -r -p "Press any key to return to the menu..."
+            ;;
+        8)
+            echo -e "${GREEN}Thank you for using the S23/S23+/S23U Vulkan Rendering Tool!${RESET}"
+            echo -e "If you found this tool helpful, please consider giving it a ⭐ on the GitHub repo!"
+            echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
+            echo -e "For updates, visit the GitHub repo above."
+            exit 0
             ;;
         *)
             echo -e "${RED}Invalid choice${RESET}"
