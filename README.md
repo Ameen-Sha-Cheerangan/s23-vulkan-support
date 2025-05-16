@@ -82,7 +82,7 @@ chmod +x opengl-to-vulkan.sh
 ```
 Follow the on-screen menu instructions.
 
-Do this if you want to use exisiting installation ( only if build >= 2.4.8 ; Not recommended if you don't know how to know which is the latest version)
+Do this if you want to use exisiting installation ( only if build >= 2.4.9 ; Not recommended if you don't know how to know which is the latest version)
 ```
 cd ~ && cd s23-vulkan-support-{<Fill in the latest version>}
 ./opengl-to-vulkan.sh
