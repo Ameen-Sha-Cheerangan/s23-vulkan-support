@@ -1,10 +1,9 @@
 # Enable Vulkan Renderer on Samsung S23 Using Shizuku and Termux
 
-A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy S23 device **directly on-device**-no computer required. This method uses [Shizuku](https://shizuku.rikka.app/) and [Termux](https://termux.com/) to grant privileged access for system property changes, improving graphics performance
-
+A step-by-step guide to enabling the Vulkan graphics API on your Samsung Galaxy S23 device **directly on-device**-no computer required. This method uses [Shizuku](https://shizuku.rikka.app/) and [Termux](https://termux.com/) to grant privileged access for system property changes. Enabling Vulkan graphics API potentially improves performance, reduces heat, and extends battery life according to reports from Reddit users.
 Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kbisga/full_tutorial_enable_vulkan_on_s23u_without_pc/)
 
-All other limitation and FAQ listed in the main README.md file is also applicable to this, not listing due to time constraints
+### This is a simplified guide for mobile users. For complete details including limitations, benefits, and FAQs, please refer to the [main README](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/blob/main/README.md).
 
 ---
 
@@ -14,7 +13,7 @@ All other limitation and FAQ listed in the main README.md file is also applicabl
 - This method worked fine on my device, but **your results may vary**.
 - **Proceed at your own risk.** I am not responsible for any issues that may happen.
 - **Backup your data** before proceeding.
-- **Ensure you are connected to Wi-Fi** before starting.
+- **Ensure you are connected to Wi-Fi(Not Mobile Data)** before starting.
 
 ---
 
@@ -87,12 +86,12 @@ chmod +x script.sh
 10. Follow the instructions.
 
 ---
-## Do this everytime once it gets restart(or a NORMAL REBOOT)
+## After Device Restart
 
-- After normal restart(not the auto-optimization one), you have to apply the script again.
+**Note:** You only need to reapply Vulkan after a normal device restart. Samsung's auto-optimization restarts will NOT reset Vulkan rendering.
 
-1. Start the Shizuku ( There is a macrodroid shortcut for automatically starting shizuku on reboot, I am not the creator, but if you want you can use it. )
-2. You can just run.
+### Option 1: Get Latest Version (Recommended)
+Run this command to download and apply the latest version (requires internet connection):
 ```
 api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
 latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
@@ -104,10 +103,9 @@ unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-
 chmod +x script.sh
 ./script.sh
 ```
-By this you can get the updated code, I optimize the code in repo here and then , so its better to do this all the time.
+### Option 2: Use Existing Installation(>=2.4.8 ; Please don't use builds before that)
 
-
-If you don't want the updated code(or you don't have the internet connnection), you can run this instead
+If you don't have internet access or want to use your existing installation:
 ```
  cd ~/s23-vulkan-support*/Without_PC && ./script.sh
 ```
