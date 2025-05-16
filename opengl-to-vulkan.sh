@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.4.4"
+VERSION="2.4.5"
 
 # Color codes
 RED="\e[31m"
