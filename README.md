@@ -70,7 +70,7 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 
 ## Installation / How to switch to Vulkan
 
-Paste this in the terminal. This is will install the latest release and run the script
+Paste this in the terminal. This will install the latest release and run the script
 ```
 api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
 latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
