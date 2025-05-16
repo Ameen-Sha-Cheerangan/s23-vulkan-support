@@ -116,6 +116,15 @@ while true; do
 
     case $choice in
         1)
+            #Get the current auto-rotation setting
+            auto_rotation=$(adb shell settings get system accelerometer_rotation)
+            #Get the current accessibility services
+            CURRENT_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+            #To prevent live wallpapers from resetting
+            CURRENT_WALLPAPER=$(adb shell dumpsys wallpaper | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+            WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+            WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
+
             echo ""
             check_device || continue
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
@@ -288,6 +297,15 @@ while true; do
             ;;
         5)
             show_warning
+            #Get the current auto-rotation setting
+            auto_rotation=$(adb shell settings get system accelerometer_rotation)
+            #Get the current accessibility services
+            CURRENT_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+            #To prevent live wallpapers from resetting
+            CURRENT_WALLPAPER=$(adb shell dumpsys wallpaper | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+            WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+            WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
+
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
                 check_device || continue
