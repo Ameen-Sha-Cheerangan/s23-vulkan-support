@@ -82,9 +82,9 @@ chmod +x opengl-to-vulkan.sh
 ```
 Follow the on-screen menu instructions.
 
-Do this if you want to use exisiting installation ( only if build >= 2.4.8 )
+Do this if you want to use exisiting installation ( only if build >= 2.4.8 ; Not recommended if you don't know how to know which is the latest version)
 ```
-cd ~ && cd s23-vulkan-support-$latest_version
+cd ~ && cd s23-vulkan-support-{<Fill in the latest version>}
 ./opengl-to-vulkan.sh
 ```
 can be used to execute the script after restart(auto-optimisation restart doesn't need reapplying, as it won't revert to OpenGL). But I recommend the whole commands in the above block to be pasted in terminal as it will download the latest release and run the script in that.
