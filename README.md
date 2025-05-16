@@ -34,10 +34,9 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Easy menu-driven interface with safety warnings and notices
 - Forces Vulkan rendering via ADB
 - Offers two modes for applying Vulkan:
-   - **Normal mode** :  Only restarts key system apps (recommended for most users; avoids most issues)
-   - **Aggressive mode** :  More complete procedure;(force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets;)
-                        I have fixed most of the bugs known except, gallery frame not loading. 
-- Blacklist apps from Game Driver to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/)), based on his recommend
+   - Basic mode
+   - Complete mode 
+- Blacklist apps from Game Driver to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) by Swimming_Minimum6147) which may help prevent crashes for certain apps. While results may vary, this non-breaking change is worth trying if you experience issues with specific applications.
 - Clear instructions and user prompts
 
 ---
@@ -81,7 +80,6 @@ chmod +x opengl-to-vulkan.sh
 ./opengl-to-vulkan.sh
 ```
 Follow the on-screen menu instructions.
-
 `./opengl-to-vulkan.sh` can be used to execute the script after restart(auto-optimisation restart doesn't need reapplying, as it won't revert to OpenGL). But I recommend the whole commands in the above block to be pasted in terminal as it will download the latest release and run the script in that.
 
 ---
@@ -98,6 +96,8 @@ Follow the on-screen menu instructions.
      - Remove apps from blacklist by editing blacklist.txt and re-running the blacklist option.
 - **Samsung auto optimisation restarts wont reset Vulkan rendering** - only a normal device reboot will revert to OpenGL
 - If you experience any issues after enabling Vulkan, simply reboot your device to return to OpenGL rendering.
+### Known issues
+- Some widgets may require a tap to load, after forcing vulkan.
 
 ---
 
