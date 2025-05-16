@@ -62,6 +62,7 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
      ```
    - This sets up the `rish` command for privileged operations in Termux.
    - Type `rish` , if the console says something like `dm3q:/ $` you are good to go,{ **Note** : It might ask for permission it pop up while entering ( allow the permission ) }
+   - Type `exit` to exit out of rish shell.
 8. **Install dependencies**
    - ```
      cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk nano
