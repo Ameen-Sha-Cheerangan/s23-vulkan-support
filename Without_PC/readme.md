@@ -63,7 +63,7 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
    - This sets up the `rish` command for privileged operations in Termux.
 8. **Install dependencies**
    - ```
-     cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk
+     cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk nano
      ```
 
 
@@ -111,6 +111,53 @@ If you don't have internet access or want to use your existing installation:
 ```
 
 ---
+## How to Use the Blacklist Feature
+
+The blacklist feature allows you to prevent specific apps from using the Game Driver, which can help fix crashes or compatibility issues with certain applications when Vulkan is enabled. Here's how to use it:
+
+### Creating and Editing the Blacklist File
+
+1. **Create the blacklist.txt file** (if it doesn't exist already):
+   ```bash
+   nano blacklist.txt
+   ```
+
+2. **Add package names** to blacklist, one per line. For example:
+   ```
+   com.example.problematicapp
+   com.game.crashingapp
+   com.social.unstableapp
+   ```
+
+3. **Save the file** by pressing `Ctrl + O`, then `Enter`
+
+4. **Exit nano** by pressing `Ctrl + X`
+
+5. **Apply the blacklist** by running the script and selecting option 3 from the menu
+
+### Finding Package Names
+
+If you don't know an app's package name, you can find it by:
+
+1. Going to Settings > Apps
+2. Finding the app in question
+3. Tapping on the app name
+4. Scrolling down to "App details" or "App info"
+5. Looking for "Package name" or "Application ID"
+
+### Managing Your Blacklist
+
+- **To add more apps**: Simply edit the blacklist.txt file again and run option 3
+- **To remove apps**: Edit the file, delete the package names you want to remove, and run option 3 again
+- **To clear all blacklisted apps**: Run this command:
+  ```bash
+  rish -c "settings put global game_driver_blacklist ''"
+  ```
+
+This blacklist feature is based on a community recommendation and may help prevent crashes for apps that don't work well with Vulkan rendering.
+
+---
+
 ## How to Check if Vulkan is Active
 
 To verify that Vulkan rendering is enabled:
