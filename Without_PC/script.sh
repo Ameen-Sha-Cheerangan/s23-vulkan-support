@@ -73,7 +73,7 @@ show_info() {
     echo "• To remove apps from blacklist: Delete the package name from blacklist.txt, and re-run the step 3 in the menu."
     echo "• To clear all blacklisted apps, run:"
     echo -e "  ${YELLOW}rish -c \"settings put global game_driver_blacklist ''\"${RESET}"
-    echo "  This will clear the blacklist so all apps can use the Game Driver again."
+    echo "  This will clear the blacklist."
     echo ""
     echo "If you experience issues, simply reboot your device."
     echo ""
@@ -95,7 +95,7 @@ while true; do
     echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v${VERSION} (Mobile) ==== ${RESET}"
     echo "1) Switch to Vulkan(Recommended)"
     echo "2) Switch to OpenGL (Reboot Device)"
-    echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
+    echo "3) Blacklist Apps(Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
     echo "5) Launch All Apps(Not Recommended)"
     echo "6) Turn GPUWatch On/Off"
@@ -254,7 +254,7 @@ while true; do
             if [[ ! -f blacklist.txt ]]; then
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
-                echo -e "${BLUE}Current Game Driver Blacklist:${RESET}"
+                echo -e "${BLUE}Current Blacklist:${RESET}"
                 current_blacklist=$(rish -c "settings get global game_driver_blacklist")
                 if [[ -z "$current_blacklist" ]]; then
                     echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
@@ -264,12 +264,12 @@ while true; do
                 fi
                 blacklist=$(paste -sd, blacklist.txt)
                 rish -c "settings put global game_driver_blacklist '$blacklist'"
-                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist.${RESET}"
+                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to blacklist.${RESET}"
                 echo "  This step is based on a recommendation from a Reddit user:"
                 echo -e "${BLUE}  https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/${RESET}"
                 echo "  (It may help prevent crashes for some apps, but results may vary.)"
                 echo "  To remove apps from the blacklist, edit blacklist.txt and run this step again."
-                echo -e "${BLUE}Updated Game Driver Blacklist:${RESET}"
+                echo -e "${BLUE}Updated Blacklist:${RESET}"
                 current_blacklist=$(rish -c "settings get global game_driver_blacklist")
                 if [[ -z "$current_blacklist" ]]; then
                     echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
