@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.4.4"
+VERSION="2.4.5"
 
 # Color codes
 RED="\e[31m"
@@ -45,16 +45,6 @@ cleanup() {
 trap cleanup EXIT
 
 
-show_warning() {
-    clear
-    echo "⚠️  WARNING: Launching all apps may:"
-    echo "- Wake sleeping/background apps"
-    echo "- Disrupt notification delivery"
-    echo "- Increase battery consumption temporarily"
-    echo ""
-    echo "ℹ️  In rare cases if something might not load this might fix it. But I think you can directly launch it, that would be better"
-    echo ""
-}
 
 show_warning() {
     clear
@@ -105,9 +95,10 @@ while true; do
     echo "2) Switch to OpenGL (Reboot Device)"
     echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
-    echo "5) Exit"
+    echo "5) Launch All Apps(Not Recommended)"
     echo "6) Turn GPUWatch On/Off"
     echo "7) Check for Updates"
+    echo "8) Exit"
 
     echo ""
     echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
@@ -217,7 +208,10 @@ while true; do
             rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
             RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
             while [[ "$CURRENT_ACCESSIBILITY" != "$RESTORED_ACCESSIBILITY" ]]; do
-                echo "Accessibility setti6vices \"$CURRENT_ACCESSIBILITY\""
+                echo "Accessibility settings not properly restored! Trying again..."
+                # Try again with a delay
+                sleep 1
+                rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
                 RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
                 attempts=$((attempts + 1))
                 if [[ $attempts -gt 5 ]]; then
@@ -238,7 +232,14 @@ while true; do
             echo -e "${YELLOW}Reboot your device to revert to OpenGL. If you want the script to do it for you, type 'YES' to continue.${RESET}"
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
-                rish -c "reboot"6then
+                rish -c "reboot"
+            else
+                echo -e "${RED}❌ Reboot canceled.${RESET}"
+            fi
+            read -n1 -s -r -p "Press any key to return to the menu..."
+            ;;
+        3)
+            if [[ ! -f blacklist.txt ]]; then
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
                 echo -e "${BLUE}Current Game Driver Blacklist:${RESET}"
@@ -274,22 +275,25 @@ while true; do
             show_warning
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
-                check_device || continue
-                adb shell "for pkg in \$(pm list packages | cut -f2 -d:); do monkey -p \"\$pkg\" -c android.intent.category.LAUNCHER 1; done"
+                cmd=''
+                for pkg in $(rish -c "dumpsys package | grep 'Package \[' | cut -d '[' -f2 | cut -d ']' -f1" | grep -v "ia.mo" | grep -v "com.google.android.trichromelibrary" | grep -v "com.netflix.mediaclient" | grep -v "com.termux"| grep -v "moe.shizuku.privileged.api"| grep -v "com.google.android.gsf"|sort -u); do
+                    cmd+="monkey -p \"$pkg\" -c android.intent.category.LAUNCHER 1; "
+                done
+                rish -c "$cmd"
                 echo "⚠️  All apps launched! Close unused apps from Recents immediately."
             else
                 echo "❌ Launch canceled."
             fi
             #To preserve auto rotation
             attempts=0
-            adb shell settings put system accelerometer_rotation $auto_rotation
-            restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+            rish -c "settings put system accelerometer_rotation $auto_rotation"
+            restored_auto_rotation=$(rish -c "settings get system accelerometer_rotation")
             while [[ "$auto_rotation" != "$restored_auto_rotation" ]]; do
                 echo "Auto rotation not properly restored! Trying again..."
                 # Try again with a delay
                 sleep 1
-                adb shell settings put system accelerometer_rotation $auto_rotation
-                restored_auto_rotation=$(adb shell settings get system accelerometer_rotation)
+                rish -c "settings put system accelerometer_rotation $auto_rotation"
+                restored_auto_rotation=$(rish -c "settings get system accelerometer_rotation")
                 attempts=$((attempts + 1))
                 if [[ $attempts -gt 5 ]]; then
                     echo "Failed to restore auto rotation after 5 attempts. Please manually restore auto rotation. Just enable or disable it according to your need from quick settings panel"
@@ -298,24 +302,25 @@ while true; do
             done
             #To preserve accessibility settings
             attempts=0
-            adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
-            RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+            rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
+            RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
             while [[ "$CURRENT_ACCESSIBILITY" != "$RESTORED_ACCESSIBILITY" ]]; do
                 echo "Accessibility settings not properly restored! Trying again..."
                 # Try again with a delay
                 sleep 1
-                adb shell settings put secure enabled_accessibility_services "$CURRENT_ACCESSIBILITY"
-                RESTORED_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_services)
+                rish -c "settings put secure enabled_accessibility_services \"$CURRENT_ACCESSIBILITY\""
+                RESTORED_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
                 attempts=$((attempts + 1))
                 if [[ $attempts -gt 5 ]]; then
                     echo "Failed to restore accessibility settings after 5 attempts. Please manually restore accessibility settings. Settings > Accessibility > Installed Apps > Enable or disable apps permission according to your need"
                     break
                 fi
             done
-            echo "🔄 Enabling Samsung Edge Panel..."
 
-            adb shell settings put secure edge_enable 1
-            adb shell settings put secure edge_panels_enabled 1
+            echo "🔄 Enabling Samsung Edge Panel..."
+            rish -c "settings put secure edge_enable 1"
+            rish -c "settings put secure edge_panels_enabled 1"
+            echo "✅ Edge Panel enabled. Check screen to confirm."
 
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
