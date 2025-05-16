@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.4.5"
+VERSION="2.4.6"
 
 # Color codes
 RED="\e[31m"
@@ -79,6 +79,8 @@ show_info() {
     echo ""
     read -n1 -s -r -p "Press any key to return to the menu..."
 }
+
+
 skip_clear=false
 
 while true; do
