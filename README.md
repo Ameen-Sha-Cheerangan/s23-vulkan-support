@@ -25,7 +25,7 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 
 ## Overview
 
-**Vulkan** is a modern, low-overhead graphics API that offers improved performance and efficiency over older APIs like OpenGL-especially in gaming and graphics-heavy applications. This guide shows you how to enable Vulkan on your S23 device without needing a computer, using only Termux and Shizuku.
+**Vulkan** is a modern, low-overhead graphics API that offers improved performance and efficiency over older APIs like OpenGL-. This guide shows you how to enable Vulkan on your S23 device without needing a computer, using only Termux and Shizuku.
 
 ---
 
