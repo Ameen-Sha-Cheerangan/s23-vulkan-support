@@ -103,7 +103,7 @@ unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-
 chmod +x script.sh
 ./script.sh
 ```
-### Option 2: Use Existing Installation(>=2.4.8 ; Please don't use builds before that)
+### Option 2: Use Existing Installation(>=2.4.9 ; Please don't use builds before that)
 
 If you don't have internet access or want to use your existing installation:
 ```
