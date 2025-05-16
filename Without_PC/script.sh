@@ -109,6 +109,15 @@ while true; do
 
     case $choice in
         1)
+            # Get the current auto-rotation setting
+            auto_rotation=$(rish -c "settings get system accelerometer_rotation")
+
+            # Get the current accessibility services
+            CURRENT_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+            #To prevent live wallpapers from resetting
+            CURRENT_WALLPAPER=$(rish -c "dumpsys wallpaper" | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+            WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+            WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
             echo -e "${YELLOW}How aggressive should the script be when stopping apps?${RESET}"
             echo -e "${GREEN}1) Basic${RESET} (only restart key system apps: SystemUI, Settings, Launcher, AOD, Keyboard)"
             echo -e "${GREEN}2) Complete ${RESET}((force-stops most of the apps(some are excluded due to various reasons) and Relaunch Previously Running Apps and Widgets; More complete procedure) "
@@ -275,6 +284,15 @@ while true; do
             show_info
             ;;
         5)
+            # Get the current auto-rotation setting
+            auto_rotation=$(rish -c "settings get system accelerometer_rotation")
+
+            # Get the current accessibility services
+            CURRENT_ACCESSIBILITY=$(rish -c "settings get secure enabled_accessibility_services")
+            #To prevent live wallpapers from resetting
+            CURRENT_WALLPAPER=$(rish -c "dumpsys wallpaper" | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
+            WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
+            WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
             show_warning
             read -p "Type 'YES' to continue: " confirm
             if [[ $confirm == "YES" ]]; then
