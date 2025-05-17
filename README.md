@@ -1,8 +1,16 @@
 # S23/S23+/S23U Vulkan Rendering Tool (Linux / From Phone itself)
 
-A simple menu-driven Bash script to force Vulkan rendering on any Samsung Galaxy S23 variant via ADB from Linux.  
+This repository contains two scripts to force Vulkan rendering on Samsung Galaxy S23 series devices:
+
+- **Linux/PC Script:**  
+  A menu-driven Bash script to enable Vulkan rendering via ADB from a Linux PC. Continue reading this readme file
+- **Without PC Script:**  
+  A script to perform the same operation directly from your phone using Termux and Shizuku.  
+  See the [Without PC readme](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/blob/main/Without_PC/readme.md) for detailed instructions.
+
 Tested by the author on S23U, and based on community recommendations, this tool may improve performance, reduce device heat, and extend battery life.  
-**All changes are temporary and revert on device reboot.(not the auto-optimization restart)**
+
+> **Note:** All changes are temporary and revert on device reboot.(not the auto-optimization restart)
 
 ---
 ## Table of Contents
