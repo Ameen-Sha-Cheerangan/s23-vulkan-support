@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.5.1"
+VERSION="2.5.2"
 
 # Color codes
 RED="\e[31m"
@@ -18,6 +18,9 @@ CURRENT_ACCESSIBILITY=$(adb shell settings get secure enabled_accessibility_serv
 CURRENT_WALLPAPER=$(adb shell dumpsys wallpaper | grep mWallpaperComponent | head -1 | sed -E 's/.*ComponentInfo\{([^}]+)\}.*/\1/')
 WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
 WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
+#To preserve Edge Panel settings
+EDGE_ENABLE_ORIG=$(adb shell settings get secure edge_enable)
+EDGE_PANELS_ENABLED_ORIG=$(adb shell settings get secure edge_panels_enabled)
 
 
 echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
@@ -103,7 +106,7 @@ while true; do
     echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v${VERSION} (Linux) ==== ${RESET}"
     echo "1) Switch to Vulkan(Recommended)"
     echo "2) Switch to OpenGL (Reboot Device)"
-    echo "3) Blacklist Apps (Prevent Crashes for Listed Apps)"
+    echo "3) Blacklist Apps from Game Driver (Prevent Crashes for Listed Apps)"
     echo "4) Info/Help"
     echo "5) Launch All Apps(Not Recommended)"
     echo "6) Turn GPUWatch On/Off"
@@ -239,12 +242,8 @@ while true; do
                     break
                 fi
             done
-            echo "🔄 Enabling Samsung Edge Panel..."
-
-            adb shell settings put secure edge_enable 1
-            adb shell settings put secure edge_panels_enabled 1
-
-            echo "✅ Edge Panel enabled. Check screen to confirm."
+            adb shell settings put secure edge_enable $EDGE_ENABLE_ORIG
+            adb shell settings put secure edge_panels_enabled $EDGE_PANELS_ENABLED_ORIG
             echo "ℹ️  To revert to OpenGL, simply restart your device."
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
@@ -263,7 +262,7 @@ while true; do
             if [[ ! -f blacklist.txt ]]; then
                 echo -e "${RED}❌ blacklist.txt not found! Please create this file with one package name per line.${RESET}"
             else
-                echo -e "${GREEN}Current Blacklist:${RESET}"
+                echo -e "${GREEN}Current Game Driver Blacklist:${RESET}"
                 current_blacklist=$(adb shell settings get global game_driver_blacklist)
                 if [[ -z "$current_blacklist" || "$current_blacklist" == "null" ]]; then
                     echo -e "${YELLOW}No apps are currently blacklisted.${RESET}"
@@ -274,13 +273,13 @@ while true; do
                 echo ""
                 blacklist=$(paste -sd, blacklist.txt)
                 adb shell settings put global game_driver_blacklist "$blacklist"
-                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been blacklisted."
+                echo -e "${YELLOW}⚠️  All apps in blacklist.txt have been added to game_driver_blacklist."
                 echo "   This step is based on a recommendation from a Reddit user:"
                 echo -e "${BLUE}   https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/${RESET}"
                 echo "   (It may help prevent crashes for some apps, but results may vary.)"
                 echo "   To remove apps from the blacklist, edit blacklist.txt and run this step again."
                 echo ""
-                echo -e "${GREEN}Updated Blacklist:${RESET}"
+                echo -e "${GREEN}Updated Game Driver Blacklist:${RESET}"
                 current_blacklist=$(adb shell settings get global game_driver_blacklist)
                 if [[ -z "$current_blacklist" ]]; then
                     echo -e "${GREEN}No apps are currently blacklisted.${RESET}"
@@ -346,10 +345,8 @@ while true; do
                     break
                 fi
             done
-            echo "🔄 Enabling Samsung Edge Panel..."
-
-            adb shell settings put secure edge_enable 1
-            adb shell settings put secure edge_panels_enabled 1
+            adb shell settings put secure edge_enable $EDGE_ENABLE_ORIG
+            adb shell settings put secure edge_panels_enabled $EDGE_PANELS_ENABLED_ORIG
 
             read -n1 -s -r -p "Press any key to return to the menu..."
             ;;
