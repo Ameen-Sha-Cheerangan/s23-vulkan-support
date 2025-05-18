@@ -44,7 +44,7 @@ Tested by the author on S23U, and based on community recommendations, this tool 
 - Offers two modes for applying Vulkan:
    - Basic mode
    - Complete mode 
-- Blacklist apps to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) by Swimming_Minimum6147) which may help prevent crashes for certain apps. While results may vary, this non-breaking change is worth trying if you experience issues with specific applications.
+- Blacklist apps to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/)) which may help prevent crashes for certain apps. While results may vary, this non-breaking change is worth trying if you experience issues with specific applications.
 - Clear instructions and user prompts
 
 ---
@@ -142,7 +142,7 @@ This script is provided "as is" without warranties. While extensively tested and
 ## Credits
 
 - Original Windows script and concept: https://github.com/popovicialinc/gama
-- Driver blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
+- Driver blacklist workaround suggested by [user](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit
 - Thanks for testing : [Verix](https://github.com/Veriiix)
 ---
 
