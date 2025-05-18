@@ -107,7 +107,7 @@ can be used to execute the script after restart(auto-optimisation restart doesn'
 - **Visual Artifacts** : Some users may experience visual glitches or artifacting when Vulkan is enabled. While Adreno GPUs in the S23 series usually handle Vulkan well, your experience may vary.
 - **App Compatibility**  
   Not all apps will run properly under Vulkan. The majority do, but exceptions exist due to incomplete support from Samsung and app developers. There has been some methods shared in reddit community like below(3rd option when you run the script)
-     - blacklist workaround suggested by [Swimming_Minimum6147](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit.
+     - blacklist workaround suggested by [user](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/) on Reddit.
 - **Blacklist Management**
      - Add apps to blacklist by editing blacklist.txt (one package name per line)
      - Remove apps from blacklist by editing blacklist.txt and re-running the blacklist option.
