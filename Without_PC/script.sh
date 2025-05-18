@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.5.3"
+VERSION="2.5.2"
 
 # Color codes
 RED="\e[31m"
@@ -21,8 +21,8 @@ CURRENT_WALLPAPER=$(rish -c "dumpsys wallpaper" | grep mWallpaperComponent | hea
 WALLPAPER_PACKAGE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f1)
 WALLPAPER_SERVICE=$(echo $CURRENT_WALLPAPER | cut -d'/' -f2)
 #To preserve Edge Panel settings
-EDGE_ENABLE_ORIG=$(adb shell settings get secure edge_enable)
-EDGE_PANELS_ENABLED_ORIG=$(adb shell settings get secure edge_panels_enabled)
+EDGE_ENABLE_ORIG=$(rish -c "settings get secure edge_enable")
+EDGE_PANELS_ENABLED_ORIG=$(rish -c "settings get secure edge_panels_enabled")
 
 echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
 echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings .${RESET}"
@@ -405,3 +405,4 @@ while true; do
             ;;
     esac
 done
+
