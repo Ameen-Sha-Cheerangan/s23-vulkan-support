@@ -68,6 +68,13 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
      cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk nano
      ```
 
+---
+
+### ✨ Demo: Running the Script (Mobile Version)
+
+Here is a quick demo of the main script menu and the **Complete Mode** in action.
+
+![S23 Vulkan Termux Demo](mobile-demo.gif) 
 
 ---
 
