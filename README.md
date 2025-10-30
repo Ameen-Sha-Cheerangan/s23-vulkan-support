@@ -12,6 +12,9 @@ Tested by the author on S23U running on OneUI 7, and based on community recommen
 
 > **Note:** All changes are temporary and revert on device reboot.(not the auto-optimization restart)
 
+### ✨ Demo (Linux Script)
+![S23 Vulkan Tool Demo](demo.gif)
+
 ---
 ## Table of Contents
 - [Overview](#overview)
