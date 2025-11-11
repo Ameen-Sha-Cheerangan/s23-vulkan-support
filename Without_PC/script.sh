@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-VERSION="2.5.5"
+VERSION="2.6.0"
 
 # Color codes
 RED="\e[31m"
@@ -168,7 +168,7 @@ while true; do
                 #     cmds+='count=$((count + 1)); '
                 #     cmds+='printf "\rProgress: %d/%d packages stopped - %s" "$count" "$total" '"$pkg"'; '
                 # done < all_packages.txt
-                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt
+                grep -v -e "com.samsung.android.bluelightfilter" -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt
                 # to prevent wifi calling from breaking
                 mv filtered_packages.txt all_packages.txt
                 total=$(wc -l < all_packages.txt)
