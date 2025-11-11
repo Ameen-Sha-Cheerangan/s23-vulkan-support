@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.5.5"
+VERSION="2.6.0"
 
 # Color codes
 RED="\e[31m"
@@ -182,7 +182,7 @@ while true; do
                     continue
                 fi
 
-                grep -v -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
+                grep -v -e "com.samsung.android.bluelightfilter" -e "com.samsung.android.wcmurlsnetworkstack" -e "com.sec.unifiedwfc" -e "com.samsung.android.net.wifi.wifiguider" -e "com.sec.imsservice" -e "com.samsung.ims.smk" -e "com.sec.epdg" -e "com.samsung.android.networkstack" -e "com.samsung.android.networkdiagnostic" -e "com.samsung.android.ConnectivityOverlay" -e "$WALLPAPER_PACKAGE" -e "$WALLPAPER_SERVICE" all_packages.txt > filtered_packages.txt # to prevent wifi calling from breaking and keep the current live wallpaper intact
 
                 echo "Stopping apps..., Please wait"
                 cmds=''
