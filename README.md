@@ -1,6 +1,6 @@
-# S23/S23+/S23U Vulkan Rendering Tool (Linux / From Phone itself)
+# Android Vulkan Configuration Utility ( Mainly used for S23/S23+/S23U Vulkan Rendering Tool (Linux / From Phone itself) )
 
-This repository contains two scripts to force Vulkan rendering on Samsung Galaxy S23 series devices:
+This repository contains two scripts to force Vulkan rendering on Samsung Galaxy S23 series devices (tested on non samsung devices as well):
 
 - **Linux/PC Script:**  
   A menu-driven Bash script to enable Vulkan rendering via ADB from a Linux PC. Continue reading this readme file
