@@ -68,15 +68,7 @@ Credits : [adam444555](https://www.reddit.com/user/adam444555/) for this [post](
      cd ~ && apt update && apt upgrade && apt install git wget unzip coreutils grep gawk nano
      ```
 
----
 
-### ✨ Demo: Running the Script (Mobile Version)
-
-Here is a quick demo of the main script menu and the **Complete Mode** in action.
-
-![S23 Vulkan Termux Demo](mobile-demo.gif) 
-
----
 
 9. Clone the repo and run the script(to take the latest release)
 
@@ -91,7 +83,15 @@ unzip $latest_version*.zip && rm $latest_version*.zip* && cd s23-vulkan-support-
 chmod +x script.sh
 ./script.sh
 ```
+---
 
+### ✨ Demo: Running the Script (Mobile Version)
+
+Here is a quick demo of the main script menu and the **Complete Mode** in action.
+
+![S23 Vulkan Termux Demo](mobile-demo.gif) 
+
+---
 10. Follow the instructions.
 
 11. After finishing all script running and all type `exit` in the termux or just swipe down to see the termux persistent notification in the notification panel and click exit over there.
