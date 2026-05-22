@@ -1,9 +1,11 @@
 # Android Vulkan Configuration Utility
-## (Mainly used for S23/S23+/S23U | Execution: Linux PC via USB or On-Device)
-This repository contains two scripts to force Vulkan rendering on Samsung Galaxy S23 series devices (tested on non-Samsung devices as well, but its optimized for S23 series):
+## (Mainly used for S23/S23+/S23U | Execution: macOS/Linux PC via USB or On-Device)
+This repository contains scripts to force Vulkan rendering on Samsung Galaxy S23 series devices (tested on non-Samsung devices as well, but it is optimized for the S23 series):
 
 - **Linux/PC Script:**  
-  A menu-driven Bash script to enable Vulkan rendering via ADB from a Linux PC. Continue reading this readme file
+  `opengl-to-vulkan.sh` is the upstream menu-driven Bash script to enable Vulkan rendering via ADB from a Linux PC.
+- **macOS Script:**  
+  `opengl-to-vulkan-macos.sh` is a macOS-friendly variant based on v2.6.0. It avoids GNU-only command options, uses macOS-safe terminal output, stores temporary files in a `mktemp` directory, and supports shortcut flags such as `--full`, `--basic`, `--blacklist`, `--reboot`, `--updates`, and `--help`.
 - **Without PC Script:**  
   A script to perform the same operation directly from your phone using Termux and Shizuku.  
   See the [Without PC readme](https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/blob/main/Without_PC/readme.md) for detailed instructions.
@@ -47,6 +49,7 @@ Tested by the author on S23U running on OneUI 7, and based on community recommen
 - Offers two modes for applying Vulkan:
    - Basic mode
    - Complete mode 
+- macOS helper script with ASCII-safe output and shortcuts for common actions
 - Blacklist apps to prevent crashes(based on [Reddit recommendation](https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/)) which may help prevent crashes for certain apps. While results may vary, this non-breaking change is worth trying if you experience issues with specific applications.
 - Clear instructions and user prompts
 
@@ -69,10 +72,11 @@ Tested by the author on S23U running on OneUI 7, and based on community recommen
 
 ## Requirements
 
-- Linux PC
-- [ADB](https://developer.android.com/tools/adb) installed (usually pre-installed on most Linux distros)
-      Ubuntu - (`sudo apt-get update && sudo apt-get install android-sdk-platform-tools gawk grep coreutils unzip`)
-      Fedora/RHEL/CentOS - (`sudo dnf install android-tools gawk grep coreutils unzip`)
+- macOS or Linux PC
+- [ADB](https://developer.android.com/tools/adb) installed:
+  - macOS with Homebrew: `brew install android-platform-tools`
+  - Ubuntu: `sudo apt-get update && sudo apt-get install android-sdk-platform-tools gawk grep coreutils unzip`
+  - Fedora/RHEL/CentOS: `sudo dnf install android-tools gawk grep coreutils unzip`
 - Samsung Galaxy S23/S23+/S23U
 - USB Debugging enabled on your phone (`Settings > Developer Options > USB Debugging`)
 - A suitable USB cable for connection
@@ -81,7 +85,41 @@ Tested by the author on S23U running on OneUI 7, and based on community recommen
 
 ## Installation / How to switch to Vulkan
 
-Paste this in the terminal. This will install the latest release and run the script
+Clone the repository and enter the project folder:
+```
+git clone https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support.git
+cd s23-vulkan-support
+```
+
+### macOS
+
+Run the macOS script:
+```
+chmod +x opengl-to-vulkan-macos.sh
+./opengl-to-vulkan-macos.sh
+```
+
+The full Vulkan flow is the default recommended menu action. You can also run actions directly:
+```
+./opengl-to-vulkan-macos.sh --full
+./opengl-to-vulkan-macos.sh --basic
+./opengl-to-vulkan-macos.sh --blacklist
+./opengl-to-vulkan-macos.sh --reboot
+./opengl-to-vulkan-macos.sh --updates
+./opengl-to-vulkan-macos.sh --help
+```
+
+### Linux
+
+Run the upstream Linux script:
+```
+chmod +x opengl-to-vulkan.sh
+./opengl-to-vulkan.sh
+```
+
+### Latest upstream release for Linux
+
+If you want to install the latest upstream release and run the Linux script, paste this in the terminal:
 ```
 api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
 latest_version=$(echo "$api_response" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
@@ -94,13 +132,17 @@ chmod +x opengl-to-vulkan.sh
 Follow the on-screen menu instructions.
 
 
-### Do this if you want to use exisiting installation ( only if build >= 2.5.5 ; Not recommended )
+### Do this if you want to use an existing installation (only if build >= 2.5.5; not recommended)
 
 ```
 cd ~ && cd s23-vulkan-support-{<Fill in the latest version>}
 ./opengl-to-vulkan.sh
 ```
-can be used to execute the script after restart(auto-optimisation restart doesn't need reapplying, as it won't revert to OpenGL). But I recommend the whole commands in the above block to be pasted in terminal as it will download the latest release and run the script in that.
+On macOS, run:
+```
+./opengl-to-vulkan-macos.sh
+```
+This can be used to execute the script after restart. Auto-optimisation restart does not need reapplying, as it will not revert to OpenGL. For Linux, the latest upstream release command above is still recommended.
 
 ---
 
@@ -114,6 +156,7 @@ can be used to execute the script after restart(auto-optimisation restart doesn'
 - **Blacklist Management**
      - Add apps to blacklist by editing blacklist.txt (one package name per line)
      - Remove apps from blacklist by editing blacklist.txt and re-running the blacklist option.
+- **macOS temporary files** are written under macOS temporary storage and cleaned up automatically when the script exits.
 - **Samsung auto optimisation restarts wont reset Vulkan rendering** - only a normal device reboot will revert to OpenGL
 - If you experience any issues after enabling Vulkan, simply reboot your device to return to OpenGL rendering.
 ### Known issues
