@@ -1,17 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 VERSION="2.6.0"
 SCRIPT_NAME="${0##*/}"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd -P)"
 BLACKLIST_FILE="$SCRIPT_DIR/blacklist.txt"
 
 # Color codes
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-BLUE="\e[34m"
-BOLD="\e[1m"
-RESET="\e[0m"
+if [[ -t 1 && "${TERM:-}" != "dumb" ]]; then
+    RED=$'\033[31m'
+    GREEN=$'\033[32m'
+    YELLOW=$'\033[33m'
+    BLUE=$'\033[34m'
+    BOLD=$'\033[1m'
+    RESET=$'\033[0m'
+else
+    RED=""
+    GREEN=""
+    YELLOW=""
+    BLUE=""
+    BOLD=""
+    RESET=""
+fi
 
 TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/s23-vulkan.XXXXXX") || {
     echo "Failed to create a temporary directory."
@@ -43,15 +52,15 @@ pause_if_interactive() {
 }
 
 print_error() {
-    echo -e "${RED}[ERROR] $*${RESET}"
+    printf '%b%s%b\n' "$RED" "[ERROR] $*" "$RESET"
 }
 
 print_success() {
-    echo -e "${GREEN}[OK] $*${RESET}"
+    printf '%b%s%b\n' "$GREEN" "[OK] $*" "$RESET"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARN] $*${RESET}"
+    printf '%b%s%b\n' "$YELLOW" "[WARN] $*" "$RESET"
 }
 
 check_commands() {
@@ -162,14 +171,14 @@ restart_widget_packages() {
 
 show_notice() {
     clear
-    echo -e "${BOLD}${RED}==== NOTICE ====${RESET}"
-    echo -e "${YELLOW}This tool is provided for your convenience and makes changes to system settings via ADB.${RESET}"
+    printf '%b\n' "${BOLD}${RED}==== NOTICE ====${RESET}"
+    printf '%b\n' "${YELLOW}This tool is provided for your convenience and makes changes to system settings via ADB.${RESET}"
     echo "I have tested it extensively on my own device and have not seen issues, but use care."
     echo ""
-    echo -e "${GREEN}Please use responsibly and do not use this tool for harmful or inappropriate purposes.${RESET}"
+    printf '%b\n' "${GREEN}Please use responsibly and do not use this tool for harmful or inappropriate purposes.${RESET}"
     echo "If you have any concerns, consider backing up your data first."
     echo ""
-    echo -e "${YELLOW}Standard Disclaimer:${RESET}"
+    printf '%b\n' "${YELLOW}Standard Disclaimer:${RESET}"
     echo "This script is provided \"as is,\" with no guarantees or warranties. Use at your own risk."
     echo "The script only changes a system rendering setting temporarily; it reverts on reboot."
     echo "The script does not modify or delete files on your device."
@@ -194,21 +203,21 @@ show_warning() {
 
 show_info() {
     clear
-    echo -e "${BOLD}${BLUE}==== Info and Help ====${RESET}"
+    printf '%b\n' "${BOLD}${BLUE}==== Info and Help ====${RESET}"
     echo ""
     echo "- This script forces Vulkan rendering on your Samsung S23 device."
     echo "- Forcing Vulkan can improve performance, reduce heat, improve battery life, and help with lag."
     echo "- To revert to OpenGL, restart your device."
     echo "- You must re-run this script after every device reboot to keep Vulkan active."
-    echo -e "${GREEN}- Samsung auto optimization restarts will not reset Vulkan rendering. Only a full device reboot will revert to OpenGL.${RESET}"
+    printf '%b\n' "${GREEN}- Samsung auto optimization restarts will not reset Vulkan rendering. Only a full device reboot will revert to OpenGL.${RESET}"
     echo ""
-    echo -e "${BOLD}Blacklist Management:${RESET}"
+    printf '%b\n' "${BOLD}Blacklist Management:${RESET}"
     echo "- To add apps to the blacklist, edit blacklist.txt and add one package name per line."
     echo "  Example package name: com.example.app"
-    echo -e "- To find an app package name, use ${YELLOW}adb shell pm list packages | grep keyword${RESET} or search online."
+    printf '%b\n' "- To find an app package name, use ${YELLOW}adb shell pm list packages | grep keyword${RESET} or search online."
     echo "- To remove apps from the blacklist, edit blacklist.txt and run the blacklist action again."
     echo "- To clear all blacklisted apps, run:"
-    echo -e "  ${YELLOW}adb shell 'settings put global game_driver_blacklist \"\"'${RESET}"
+    printf '%b\n' "  ${YELLOW}adb shell 'settings put global game_driver_blacklist \"\"'${RESET}"
     echo ""
     echo "If you experience issues, reboot your device."
     echo ""
@@ -353,10 +362,10 @@ run_blacklist() {
         return 1
     fi
 
-    echo -e "${GREEN}Current Game Driver Blacklist:${RESET}"
+    printf '%b\n' "${GREEN}Current Game Driver Blacklist:${RESET}"
     current_blacklist=$(adb shell settings get global game_driver_blacklist)
     if [[ -z "$current_blacklist" || "$current_blacklist" == "null" ]]; then
-        echo -e "${YELLOW}No apps are currently blacklisted.${RESET}"
+        printf '%b\n' "${YELLOW}No apps are currently blacklisted.${RESET}"
     else
         echo "$current_blacklist" | tr ',' '\n'
     fi
@@ -367,15 +376,15 @@ run_blacklist() {
 
     print_warning "All apps in blacklist.txt have been added to game_driver_blacklist."
     echo "This step is based on a recommendation from a Reddit user:"
-    echo -e "${BLUE}https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/${RESET}"
+    printf '%b\n' "${BLUE}https://www.reddit.com/r/GalaxyS23Ultra/comments/1kgnzru/comment/mr0qdd4/${RESET}"
     echo "It may help prevent crashes for some apps, but results may vary."
     echo "To remove apps from the blacklist, edit blacklist.txt and run this action again."
     echo ""
-    echo -e "${GREEN}Updated Game Driver Blacklist:${RESET}"
+    printf '%b\n' "${GREEN}Updated Game Driver Blacklist:${RESET}"
 
     current_blacklist=$(adb shell settings get global game_driver_blacklist)
     if [[ -z "$current_blacklist" || "$current_blacklist" == "null" ]]; then
-        echo -e "${YELLOW}No apps are currently blacklisted.${RESET}"
+        printf '%b\n' "${YELLOW}No apps are currently blacklisted.${RESET}"
     else
         echo "$current_blacklist" | tr ',' '\n'
     fi
@@ -384,7 +393,7 @@ run_blacklist() {
 run_reboot() {
     check_device || return 1
 
-    echo -e "${YELLOW}Reboot your device to revert to OpenGL. Type YES to continue.${RESET}"
+    printf '%b\n' "${YELLOW}Reboot your device to revert to OpenGL. Type YES to continue.${RESET}"
     read -p "Type 'YES' to continue: " confirm
     if [[ "$confirm" == "YES" ]]; then
         adb reboot
@@ -410,19 +419,19 @@ run_launch_all_apps() {
 }
 
 run_gpuwatch_info() {
-    echo -e "${BOLD}${YELLOW}GPUWatch cannot be enabled via ADB.${RESET}"
+    printf '%b\n' "${BOLD}${YELLOW}GPUWatch cannot be enabled via ADB.${RESET}"
     echo ""
-    echo -e "${GREEN}To enable GPUWatch, follow these steps on your device:${RESET}"
+    printf '%b\n' "${GREEN}To enable GPUWatch, follow these steps on your device:${RESET}"
     echo "1. Go to Settings > Developer Options > GPU Watch"
     echo "2. Toggle ON"
     echo ""
-    echo -e "${YELLOW}You will see a persistent notification that lets you control the overlay.${RESET}"
+    printf '%b\n' "${YELLOW}You will see a persistent notification that lets you control the overlay.${RESET}"
 }
 
 run_update_check() {
     check_commands curl sed || return 1
 
-    echo -e "${BOLD}${YELLOW}Checking for updates...${RESET}"
+    printf '%b\n' "${BOLD}${YELLOW}Checking for updates...${RESET}"
     api_response=$(curl -s https://api.github.com/repos/Ameen-Sha-Cheerangan/s23-vulkan-support/releases/latest)
     latest_version=$(echo "$api_response" | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | sed -n '1p')
     latest_version_clean=$(echo "$latest_version" | sed 's/^v//')
@@ -434,20 +443,20 @@ run_update_check() {
         print_success "You are using the latest version (v$VERSION)."
     else
         skip_clear=true
-        echo -e "${RED}A new version ($latest_version) is available. You are using v$VERSION.${RESET}"
-        echo -e "${YELLOW}If you want to update, exit this running program and run these commands:${RESET}"
-        echo -e "${YELLOW}Commands:${RESET}"
-        echo -e "${GREEN}cd .. && rm -rf s23-vulkan-support-$VERSION* $VERSION*.zip${RESET}"
-        echo -e "${GREEN}curl -L -o $latest_version.zip https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip${RESET}"
-        echo -e "${GREEN}unzip $latest_version.zip && cd s23-vulkan-support-$latest_version${RESET}"
-        echo -e "${GREEN}chmod +x opengl-to-vulkan-macos.sh${RESET}"
-        echo -e "${YELLOW}Then run the script:${RESET}"
-        echo -e "${GREEN}./opengl-to-vulkan-macos.sh${RESET}"
+        printf '%b\n' "${RED}A new version ($latest_version) is available. You are using v$VERSION.${RESET}"
+        printf '%b\n' "${YELLOW}If you want to update, exit this running program and run these commands:${RESET}"
+        printf '%b\n' "${YELLOW}Commands:${RESET}"
+        printf '%b\n' "${GREEN}cd .. && rm -rf s23-vulkan-support-$VERSION* $VERSION*.zip${RESET}"
+        printf '%b\n' "${GREEN}curl -L -o $latest_version.zip https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support/archive/refs/tags/$latest_version.zip${RESET}"
+        printf '%b\n' "${GREEN}unzip $latest_version.zip && cd s23-vulkan-support-$latest_version${RESET}"
+        printf '%b\n' "${GREEN}chmod +x opengl-to-vulkan-macos.sh${RESET}"
+        printf '%b\n' "${YELLOW}Then run the script:${RESET}"
+        printf '%b\n' "${GREEN}./opengl-to-vulkan-macos.sh${RESET}"
 
         release_notes=$(echo "$api_response" | sed -n 's/.*"body"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | sed 's/\\r\\n/ /g' | sed -n '1p')
         if [ -n "$release_notes" ]; then
-            echo -e "${YELLOW}Release notes:${RESET}"
-            echo -e "${BLUE}$release_notes${RESET}"
+            printf '%b\n' "${YELLOW}Release notes:${RESET}"
+            printf '%b\n' "${BLUE}$release_notes${RESET}"
         fi
     fi
 }
@@ -460,8 +469,8 @@ show_menu() {
             skip_clear=false
         fi
 
-        echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
-        echo -e "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v$VERSION (macOS) ====${RESET}"
+        printf '%b\n' "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
+        printf '%b\n' "${BOLD}${BLUE}==== S23/S23+/S23U Vulkan Rendering Tool v$VERSION (macOS) ====${RESET}"
         echo "1) Switch to Vulkan - Full (Recommended)"
         echo "2) Switch to Vulkan - Basic"
         echo "3) Switch to OpenGL (Reboot Device)"
@@ -472,7 +481,7 @@ show_menu() {
         echo "8) Check for Updates"
         echo "9) Exit"
         echo ""
-        echo -e "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
+        printf '%b\n' "${YELLOW}Note: Vulkan rendering must be re-applied after every device restart.${RESET}"
         echo ""
         read -p "Choose [1-9, default 1]: " choice
         choice=${choice:-1}
@@ -512,7 +521,7 @@ show_menu() {
             9)
                 print_success "Thank you for using the S23/S23+/S23U Vulkan Rendering Tool."
                 echo "If you found this tool helpful, please consider giving it a star on the GitHub repo."
-                echo -e "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
+                printf '%b\n' "${BLUE}GitHub: https://github.com/Ameen-Sha-Cheerangan/s23-vulkan-support${RESET}"
                 echo "For updates, visit the GitHub repo above."
                 exit 0
                 ;;
