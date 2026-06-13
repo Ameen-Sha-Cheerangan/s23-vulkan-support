@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="2.6.0"
+VERSION="2.6.2"
 SCRIPT_NAME="${0##*/}"
 SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd -P)"
 BLACKLIST_FILE="$SCRIPT_DIR/blacklist.txt"
