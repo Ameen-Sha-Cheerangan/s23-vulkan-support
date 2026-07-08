@@ -206,7 +206,9 @@ You can support directly via any UPI app (GPay, PhonePe, Paytm) using the QR cod
 
 > **📱 Viewing on mobile?** 
 > * **Direct Link:** [Click here to open your UPI app](https://upi.pe/ameenshahcheerangan-1@okicici?pn=Ameen+Sha+C)
-> * **Manual Scan:** Take a screenshot of the QR code above and upload it directly inside your UPI app (GPay, PhonePe, Paytm, etc.).---
+> * **Manual Scan:** Take a screenshot of the QR code above and upload it directly inside your UPI app (GPay, PhonePe, Paytm, etc.).
+
+---
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
