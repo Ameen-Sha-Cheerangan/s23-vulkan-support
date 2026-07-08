@@ -199,7 +199,7 @@ You can support me instantly via **Ko-fi**.
 You can support directly via any UPI app (GPay, PhonePe, Paytm) using the QR code or ID below:
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/assets/upi-qr.jpg" alt="UPI QR Code" width="220"/>
+  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/.github/main/assets/upi-qr.jpg" alt="UPI QR Code" width="220"/>
   <br/>
   <b>UPI ID:</b> <code>ameenshahcheerangan-1@okicici</code>
 </div>
