@@ -193,8 +193,6 @@ You can support me instantly via **Ko-fi**.
   <img src="https://storage.ko-fi.com/cdn/brandasset/kofi_button_blue.png" alt="Buy Me a Coffee at ko-fi.com" height="36" />
 </a>
 
----
-
 ### 🇮🇳 Users in India (UPI)
 You can support directly via any UPI app (GPay, PhonePe, Paytm) using the QR code or ID below:
 
