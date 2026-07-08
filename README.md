@@ -186,7 +186,7 @@ If you found this tool helpful, please consider giving it a ⭐ on [GitHub](http
 
 If this tool helped you, consider supporting its development!
 
-### 🌐 International Users (PayPal / Card)
+### 🌐 International Users
 You can support me instantly via **Ko-fi**.
 
 <a href="https://ko-fi.com/ameen_sha" target="_blank">
