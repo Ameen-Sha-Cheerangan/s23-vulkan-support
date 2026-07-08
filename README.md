@@ -185,7 +185,7 @@ If you found this tool helpful, please consider giving it a ⭐ on [GitHub](http
 ## ☕ Support this Project
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/assets/upi-qr.jpg" alt="UPI QR Code" width="200"/>
+  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/assets/upi-qr.jpg" alt="UPI QR Code" width="700"/>
   <br/>
   <b>UPI ID:</b> <code>ameenshahcheerangan-1@okicici</code>
 </div>
