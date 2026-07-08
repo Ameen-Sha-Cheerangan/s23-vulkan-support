@@ -179,5 +179,33 @@ To verify that Vulkan rendering is enabled:
 
 This is the easiest way to confirm that Vulkan is running on your Galaxy S23/S23+/S23U device.
 
+---
+
+## ☕ Support this Project
+
+If this tool helped you, consider supporting its development!
+
+### 🌐 International Users
+You can support me instantly via **Ko-fi**.
+
+<a href="https://ko-fi.com/ameen_sha" target="_blank">
+  <img src="https://storage.ko-fi.com/cdn/brandasset/kofi_button_blue.png" alt="Buy Me a Coffee at ko-fi.com" height="36" />
+</a>
+
+---
+
+### 🇮🇳 Users in India (UPI)
+You can support directly via any UPI app (GPay, PhonePe, Paytm) using the QR code or ID below:
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/assets/upi-qr.jpg" alt="UPI QR Code" width="220"/>
+  <br/>
+  <b>UPI ID:</b> <code>ameenshahcheerangan-1@okicici</code>
+</div>
+
+<br/>
+
+> **📱 Viewing on mobile?** [Click here to open your UPI app directly](upi://pay?pa=ameenshahcheerangan-1@okicici&pn=Ameen%20Sha&cu=INR)
+
 
 
