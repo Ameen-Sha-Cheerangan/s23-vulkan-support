@@ -182,6 +182,17 @@ If you found this tool helpful, please consider giving it a ⭐ on [GitHub](http
 
 ---
 
+## ☕ Support this Project
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/s23-vulkan-support/main/assets/upi-qr.png" alt="UPI QR Code" width="200"/>
+  <br/>
+  <b>UPI ID:</b> <code>ameenshahcheerangan-1@okicici</code>
+</div>
+<br/>
+
+> **📱 Viewing on mobile?** [Click here to pay directly via any UPI app](ameenshahcheerangan-1@okicici&pn=Ameen%20Sha&cu=INR)
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
