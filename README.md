@@ -195,12 +195,14 @@ You can support me instantly via **Ko-fi**.
 
 ### 🇮🇳 India (UPI)
 You can support directly via any UPI app (GPay, PhonePe, Paytm) using the QR code or ID below:
-
+<details>
+  <summary>View UPI payment options</summary>
 <div align="center">
   <img src="https://raw.githubusercontent.com/Ameen-Sha-Cheerangan/.github/main/assets/upi-qr.jpg" alt="UPI QR Code" width="220"/>
   <br/>
   <b>UPI ID:</b> <code>ameenshahcheerangan-1@okicici</code>
 </div>
+</details>
 
 <br/>
 
