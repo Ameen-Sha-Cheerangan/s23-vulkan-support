@@ -182,7 +182,7 @@ If you found this tool helpful, please consider giving it a ⭐ on [GitHub](http
 
 ---
 
-## ☕ Support this Project
+## ☕ Support the developer
 
 If this tool helped you, consider supporting its development!
 
